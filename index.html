@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QRSI | Quantum Reaper Steel International</title>
+  <meta name="description" content="Tier-1 Private Military Services. Quantum science meets industrial tactical excellence.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,11 +18,10 @@
               olive: '#4b5320',
               drab: '#8b8d7a',
               green: '#2F352B',
-              dark: '#1a1a1a',
-              light: '#f4f4f4',
-              accent: '#828471',
+              dark: '#0d0e0c',
+              charcoal: '#1a1a1a',
+              accent: '#FF6700', // Danger Orange for accents
             },
-            danger: '#FF6700',
           },
           fontFamily: {
             stencil: ['"Allerta Stencil"', 'system-ui'],
@@ -37,6 +37,7 @@
       color: #1a1a1a;
       font-family: 'Roboto Condensed', sans-serif;
       scroll-behavior: smooth;
+      overflow-x: hidden;
     }
     .nav-link-active::after {
       content: "";
@@ -51,28 +52,62 @@
       background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');
       opacity: 0.1;
     }
-    .btn-rounded {
-      border-radius: 9999px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Tactical Industrial Button - WarCorps Style */
+    .btn-tactical {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem 3rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+      border: 2px solid transparent;
+      clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+      cursor: pointer;
     }
-    .btn-rounded:hover {
-      background-color: #1a1a1a !important;
-      color: #ffffff !important;
-      transform: translateY(-2px);
+    .btn-tactical:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px -10px rgba(75, 83, 32, 0.4);
     }
-    /* Section targeting crosshairs from original prompt requirement */
+    .btn-tactical:active {
+      transform: translateY(-1px);
+    }
+    
+    /* Section targeting crosshairs */
+    .crosshair { position: relative; }
     .crosshair::before, .crosshair::after {
       content: '+';
       position: absolute;
       color: #4b5320;
-      font-size: 20px;
+      font-size: 24px;
       font-family: 'Allerta Stencil';
-      opacity: 0.3;
+      opacity: 0.5;
+      z-index: 10;
     }
     .crosshair-tl::before { top: 20px; left: 20px; }
     .crosshair-tr::after { top: 20px; right: 20px; }
     .crosshair-bl::before { bottom: 20px; left: 20px; }
     .crosshair-br::after { bottom: 20px; right: 20px; }
+    
+    /* Image Angle Clipping */
+    .clip-tactical {
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
+    }
+    
+    /* CRT/Footage effect */
+    .footage-overlay {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #4b5320; }
+    ::-webkit-scrollbar-thumb:hover { background: #2F352B; }
   </style>
 <script type="importmap">
 {
@@ -90,5 +125,6 @@
 </head>
 <body>
   <div id="root"></div>
+  <script type="module" src="index.tsx"></script>
 </body>
 </html>
