@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QRSI | Quantum Reaper Steel International</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Allerta+Stencil&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            army: {
+              olive: '#4b5320',
+              drab: '#8b8d7a',
+              green: '#2F352B',
+              dark: '#1a1a1a',
+              light: '#f4f4f4',
+              accent: '#828471',
+            },
+            danger: '#FF6700',
+          },
+          fontFamily: {
+            stencil: ['"Allerta Stencil"', 'system-ui'],
+            body: ['"Roboto Condensed"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #1a1a1a;
+      font-family: 'Roboto Condensed', sans-serif;
+      scroll-behavior: smooth;
+    }
+    .nav-link-active::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: #4b5320;
+    }
+    .camo-pattern {
+      background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');
+      opacity: 0.1;
+    }
+    .btn-rounded {
+      border-radius: 9999px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-rounded:hover {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+      transform: translateY(-2px);
+    }
+    /* Section targeting crosshairs from original prompt requirement */
+    .crosshair::before, .crosshair::after {
+      content: '+';
+      position: absolute;
+      color: #4b5320;
+      font-size: 20px;
+      font-family: 'Allerta Stencil';
+      opacity: 0.3;
+    }
+    .crosshair-tl::before { top: 20px; left: 20px; }
+    .crosshair-tr::after { top: 20px; right: 20px; }
+    .crosshair-bl::before { bottom: 20px; left: 20px; }
+    .crosshair-br::after { bottom: 20px; right: 20px; }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.2.3",
+    "react-dom": "https://esm.sh/react-dom@19.2.3",
+    "react-dom/client": "https://esm.sh/react-dom@19.2.3/client",
+    "framer-motion": "https://esm.sh/framer-motion@12.23.28",
+    "lucide-react": "https://esm.sh/lucide-react@0.462.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>
