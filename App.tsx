@@ -45,11 +45,15 @@ import {
   Camera,
   Video,
   MessageCircle,
-  Send
+  Send,
+  Fingerprint,
+  Search,
+  Monitor,
+  Dna,
+  Database
 } from 'lucide-react';
 
 const MDiv = motion.div as any;
-// Fix: Define MA as motion.a cast to any to allow custom motion props like whileHover on anchor elements without TS errors.
 const MA = motion.a as any;
 
 type ViewType = 'home' | 'about' | 'capabilities' | 'armory' | 'contact' | 'consultancy' | 'bodyguard';
@@ -69,7 +73,7 @@ const translations = {
       home: 'HOME',
       about: 'WHO WE ARE',
       capabilities: 'CORE CAPABILITIES',
-      bodyguard: 'BODYGUARD VIDEO',
+      bodyguard: 'PROTECTION & INTEL',
       consultancy: 'CONSULTANCY',
       armory: 'ARMORY',
       contact: 'CONTACT',
@@ -88,7 +92,9 @@ const translations = {
       missionReq: 'MISSION REQ:',
       tier1: 'TIER 1 ACCESS',
       ident: 'IDENT: RESTRICTED',
-      request: 'REQUEST ENGAGEMENT'
+      request: 'REQUEST ENGAGEMENT',
+      viewAll: 'VIEW ALL CAPABILITIES',
+      archives: 'ACCESS ARCHIVES'
     },
     about: {
       narrative: 'Our Narrative',
@@ -99,11 +105,33 @@ const translations = {
       supremacy: 'THE REAPER SUPREMACY',
       supremacyDesc: "We don't just secure assets; we dominate the environment. Our presence is the ultimate deterrent. Utilizing a combination of kinetic superiority and quantum-fusion intel, we stay 72 hours ahead of hostile intent."
     },
+    portfolio: {
+      title: 'OPERATIONAL PORTFOLIO',
+      subtitle: 'MISSION LOGS & ASSET TRAINING',
+      training: 'TACTICAL TRAINING SESSIONS',
+      trainingDesc: 'High-intensity elite training drills. Urban warfare, CQB, and precision marksmanship mastery.',
+      monitoring: 'COMMAND & CONTROL CENTER',
+      monitoringDesc: '24/7 Global Surveillance Hub. Quantum-linked monitoring of critical assets and high-threat theaters.',
+      field: 'FIELD DEPLOYMENTS',
+      fieldDesc: 'Live operation snippets from various global theaters. Active protection and secure logistics in motion.'
+    },
     bodyguard: {
       title: 'About the service',
       desc1: 'QRSI. will ensure that your escort is captured under the professional guidance of an expert for the close protection team. We use advanced equipment and technology to ensure high image clarity and excellent sound.',
       desc2: 'As a result, you will receive a unique video, with professional personal security, which will preserve your most important moments for years to come.',
       expert: 'EXPERT FOR VIDEO SUPPORT'
+    },
+    detective: {
+      title: 'PRIVATE DETECTIVE',
+      desc1: 'Covert surveillance and digital footprint tracking for sensitive individual cases. We operate in the shadows to provide absolute clarity.',
+      desc2: 'Our operatives are experts in social engineering, technical surveillance countermeasures, and real-time asset tracking across global jurisdictions.',
+      expert: 'COVERT SURVEILLANCE OPS'
+    },
+    investigation: {
+      title: 'TACTICAL INVESTIGATION',
+      desc1: 'Deep-spectrum investigation into corporate espionage, asset misappropriation, and high-level fraud.',
+      desc2: 'Utilizing Tier-1 digital forensics and human intelligence networks, we uncover what others miss. We provide actionable evidence for terminal legal or tactical resolutions.',
+      expert: 'FORENSIC INTELLIGENCE'
     }
   },
   fr: {
@@ -111,7 +139,7 @@ const translations = {
       home: 'ACCUEIL',
       about: 'QUI SOMMES-NOUS',
       capabilities: 'CAPACITÉS CLÉS',
-      bodyguard: 'VIDÉO GARDE DU CORPS',
+      bodyguard: 'PROTECTION & RENSEIGNEMENT',
       consultancy: 'CONSEIL',
       armory: 'ARMURERIE',
       contact: 'CONTACT',
@@ -130,7 +158,9 @@ const translations = {
       missionReq: 'REQ. MISSION :',
       tier1: 'ACCÈS NIVEAU 1',
       ident: 'IDENT : RESTREINT',
-      request: 'DEMANDER ENGAGEMENT'
+      request: 'DEMANDER ENGAGEMENT',
+      viewAll: 'VOIR TOUTES LES CAPACITÉS',
+      archives: 'ACCÉDER AUX ARCHIVES'
     },
     about: {
       narrative: 'Notre Récit',
@@ -141,11 +171,33 @@ const translations = {
       supremacy: 'LA SUPRÉMATIE REAPER',
       supremacyDesc: "Nous ne nous contentons pas de sécuriser les actifs ; nous dominons l'environnement. Notre présence est le moyen de dissuasion ultime. Grâce à une combinaison de supériorité cinétique et d'intelligence fusionnée par quantum, nous gardons 72 heures d'avance sur toute intention hostile."
     },
+    portfolio: {
+      title: 'PORTFOLIO OPÉRATIONNEL',
+      subtitle: 'LOGS DE MISSION & ENTRAÎNEMENT',
+      training: 'SESSIONS D\'ENTRAÎNEMENT TACTIQUE',
+      trainingDesc: 'Exercices d\'élite à haute intensité. Combat urbain, CQB et maîtrise du tir de précision.',
+      monitoring: 'CENTRE DE COMMANDEMENT',
+      monitoringDesc: 'Hub de surveillance mondial 24/7. Surveillance liée par quantum des actifs critiques.',
+      field: 'DÉPLOIEMENTS SUR LE TERRAIN',
+      fieldDesc: 'Extraits d\'opérations réelles. Protection active et logistique sécurisée en mouvement.'
+    },
     bodyguard: {
       title: 'À propos du service',
       desc1: 'QRSI s\'assurera que votre escorte est filmée sous la direction professionnelle d\'un expert de l\'équipe de protection rapprochée. Nous utilisons des équipements et technologies avancés pour garantir une haute clarté d\'image et un son excellent.',
       desc2: 'En conséquence, vous recevrez une vidéo unique, avec une sécurité personnelle professionnelle, qui préservera vos moments les plus importants pour les années à venir.',
       expert: 'EXPERT EN SUPPORT VIDÉO'
+    },
+    detective: {
+      title: 'DÉTECTIVE PRIVÉ',
+      desc1: 'Surveillance discrète et traçage d\'empreintes numériques pour les cas individuels sensibles. Nous opérons dans l\'ombre pour fournir une clarté absolue.',
+      desc2: 'Nos agents sont des experts en ingénierie sociale, en contre-mesures de surveillance technique et en suivi d\'actifs en temps réel à travers les juridictions mondiales.',
+      expert: 'OPS DE SURVEILLANCE DISCRÈTE'
+    },
+    investigation: {
+      title: 'ENQUÊTE TACTIQUE',
+      desc1: 'Enquête approfondie sur l\'espionnage industriel, le détournement d\'actifs et la fraude de haut niveau.',
+      desc2: 'En utilisant la criminalistique numérique de niveau 1 et des réseaux de renseignement humain, nous découvrons ce que les autres manquent. Nous fournissons des preuves exploitables.',
+      expert: 'INTELLIGENCE FORENSIQUE'
     }
   }
 };
@@ -200,7 +252,7 @@ const Navbar = ({ currentView, setView, lang, setLang }: { currentView: ViewType
             onClick={() => setView('contact')}
             className="btn-tactical bg-army-olive text-white text-[11px] scale-75"
            >
-             {t.engage} <ArrowRight size={14} className="ml-2" />
+             {translations[lang].nav.engage} <ArrowRight size={14} className="ml-2" />
            </button>
         </div>
 
@@ -260,7 +312,7 @@ const Hero = ({ setView, lang }: { setView: (v: ViewType) => void, lang: Languag
       ...translations[lang].hero[3]
     },
     {
-      url: "input_file_1.pnhttps://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-tima-miroshnichenko-6092069.jpg?raw=true",
+      url: "https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-tima-miroshnichenko-6092069.jpg?raw=true",
       ...translations[lang].hero[4]
     }
   ];
@@ -340,6 +392,83 @@ const Hero = ({ setView, lang }: { setView: (v: ViewType) => void, lang: Languag
   );
 };
 
+const PortfolioSection = ({ lang }: { lang: Language }) => {
+  const t = translations[lang].portfolio;
+  const portfolioItems = [
+    {
+      title: t.training,
+      desc: t.trainingDesc,
+      img: "https://github.com/expertredactionjeandumont-lang/picture/blob/main/unnamed%20(40).jpg?raw=true",
+      icon: <Target className="text-army-olive" />
+    },
+    {
+      title: t.monitoring,
+      desc: t.monitoringDesc,
+      img: "https://github.com/expertredactionjeandumont-lang/picture/blob/main/unnamed%20(39).jpg?raw=true",
+      icon: <Monitor className="text-army-olive" />
+    },
+    {
+      title: t.field,
+      desc: t.fieldDesc,
+      img: "https://raw.githubusercontent.com/expertredactionjeandumont-lang/picture/refs/heads/main/unnamed%20(38).jpg",
+      icon: <Radio className="text-army-olive" />
+    }
+  ];
+
+  return (
+    <section className="py-24 bg-white crosshair crosshair-tl crosshair-br border-t border-gray-100">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-16">
+          <span className="font-stencil text-army-olive text-xs tracking-[0.5em] uppercase block mb-4">{t.subtitle}</span>
+          <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tight text-gray-900">{t.title}</h2>
+        </div>
+        <div className="space-y-12">
+          {portfolioItems.map((item, i) => (
+            <MDiv 
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className={`flex flex-col ${i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 group`}
+            >
+              <div className="lg:w-1/2 relative overflow-hidden clip-tactical shadow-2xl">
+                <img 
+                  src={item.img} 
+                  className="w-full h-[400px] object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-1000" 
+                  alt={item.title} 
+                />
+                <div className="absolute inset-0 footage-overlay opacity-10"></div>
+              </div>
+              <div className="lg:w-1/2 p-12 bg-gray-50 border-l-8 border-army-olive shadow-xl relative overflow-hidden">
+                <div className="mb-6">{React.cloneElement(item.icon as any, { size: 48, strokeWidth: 1 })}</div>
+                <h3 className="text-3xl font-bold uppercase mb-6 tracking-tighter text-gray-900">{item.title}</h3>
+                <p className="text-gray-500 text-xl leading-relaxed mb-8">{item.desc}</p>
+                <div className="flex items-center gap-2 text-army-olive font-bold text-xs tracking-[0.3em] uppercase">
+                   {translations[lang].common.archives} <ArrowRight size={14} />
+                </div>
+                <div className="absolute -bottom-8 -right-8 opacity-5">
+                   {React.cloneElement(item.icon as any, { size: 200 })}
+                </div>
+              </div>
+            </MDiv>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const PageBackground = () => (
+  <div className="fixed inset-0 z-[-1] pointer-events-none opacity-5">
+    <img 
+      src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=2000" 
+      className="w-full h-full object-cover grayscale"
+      alt="Tactical Texture"
+    />
+    <div className="absolute inset-0 footage-overlay"></div>
+  </div>
+);
+
 const BodyguardSection = ({ lang }: { lang: Language }) => {
   const t = translations[lang].bodyguard;
   return (
@@ -381,6 +510,78 @@ const BodyguardSection = ({ lang }: { lang: Language }) => {
   );
 };
 
+const DetectiveSection = ({ lang }: { lang: Language }) => {
+  const t = translations[lang].detective;
+  return (
+    <section className="py-24 bg-gray-50/80 crosshair crosshair-tr crosshair-bl border-t border-gray-100">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col lg:flex-row items-stretch">
+          <div className="lg:w-1/2 relative min-h-[500px] lg:min-h-[600px] mb-12 lg:mb-0 overflow-hidden shadow-2xl">
+            <img 
+              src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-cottonbro-7266269.jpg?raw=true" 
+              className="w-full h-full object-cover grayscale brightness-75 contrast-125 hover:grayscale-0 transition-all duration-1000" 
+              alt="Private Detective Ops" 
+            />
+            <div className="absolute inset-0 footage-overlay opacity-20"></div>
+          </div>
+          <div className="lg:w-1/2 py-20 lg:pl-20 flex flex-col justify-center">
+            <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-12 text-gray-900 font-stencil">{t.title}</h2>
+            <div className="space-y-8 max-w-xl">
+              <p className="text-lg md:text-xl text-gray-900 font-bold leading-relaxed border-l-8 border-army-olive pl-8">
+                {t.desc1}
+              </p>
+              <p className="text-base md:text-lg text-gray-500 leading-relaxed">
+                {t.desc2}
+              </p>
+            </div>
+            <div className="mt-12 flex gap-4 text-army-olive items-center">
+              <Eye size={40} strokeWidth={1} />
+              <Fingerprint size={40} strokeWidth={1} />
+              <span className="text-[11px] font-stencil tracking-[0.4em] uppercase font-bold ml-4">{t.expert}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const InvestigationSection = ({ lang }: { lang: Language }) => {
+  const t = translations[lang].investigation;
+  return (
+    <section className="py-24 bg-white/80 crosshair crosshair-tl crosshair-br border-t border-gray-100">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col lg:flex-row-reverse items-stretch">
+          <div className="lg:w-1/2 relative min-h-[500px] lg:min-h-[600px] mb-12 lg:mb-0 overflow-hidden shadow-2xl">
+            <img 
+              src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-cottonbro-7319087.jpg?raw=true" 
+              className="w-full h-full object-cover grayscale brightness-50 hover:grayscale-0 hover:brightness-100 transition-all duration-1000" 
+              alt="Tactical Investigation" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-black/40 to-transparent"></div>
+          </div>
+          <div className="lg:w-1/2 py-20 lg:pr-20 flex flex-col justify-center">
+            <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-12 text-gray-900 font-stencil">{t.title}</h2>
+            <div className="space-y-8 max-w-xl">
+              <p className="text-lg md:text-xl text-gray-900 font-bold leading-relaxed border-r-8 border-red-600 pr-8 text-right">
+                {t.desc1}
+              </p>
+              <p className="text-base md:text-lg text-gray-500 leading-relaxed text-right">
+                {t.desc2}
+              </p>
+            </div>
+            <div className="mt-12 flex gap-4 text-red-600 items-center justify-end">
+              <span className="text-[11px] font-stencil tracking-[0.4em] uppercase font-bold mr-4">{t.expert}</span>
+              <SearchCode size={40} strokeWidth={1} />
+              <Search size={40} strokeWidth={1} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const ServiceModal = ({ service, onClose, lang }: { service: ServiceItem, onClose: () => void, lang: Language }) => (
   <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
     <MDiv initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
@@ -415,7 +616,7 @@ const ServiceModal = ({ service, onClose, lang }: { service: ServiceItem, onClos
   </div>
 );
 
-const AdvantageSection = ({ onServiceClick, lang }: { onServiceClick: (s: ServiceItem) => void, lang: Language }) => {
+const AdvantageSection = ({ onServiceClick, lang, limit, onViewAll }: { onServiceClick: (s: ServiceItem) => void, lang: Language, limit?: number, onViewAll?: () => void }) => {
   const advantages = [
     { title: lang === 'en' ? 'High-Value Target Elimination' : 'Élimination de cibles de haute valeur', icon: <Skull />, desc: lang === 'en' ? 'Surgical elimination of priority threats using advanced kinetic and quantum-assisted targeting.' : 'Élimination chirurgicale des menaces prioritaires utilisant un ciblage cinétique avancé.', longDesc: 'Direct kinetic intervention for high-priority threats. Operates under terminal phase protocols with 100% confirmation reliability.', requirements: ['Tier-1 Asset Allocation', 'Quantum Uplink Active'] },
     { title: lang === 'en' ? 'Hostage Recovery Operations' : 'Opérations de récupération d\'otages', icon: <LifeBuoy />, desc: lang === 'en' ? 'Specialized search and rescue in high-threat environments. Rapid extraction of key personnel.' : 'Recherche et sauvetage spécialisés dans des environnements à haut risque. Extraction rapide du personnel clé.', longDesc: 'Dynamic entry and recovery of personnel in compromised environments. Utilizing stealth and superior kinetic force.', requirements: ['Africa Command Hub Support', 'SAR Specialization'] },
@@ -425,7 +626,7 @@ const AdvantageSection = ({ onServiceClick, lang }: { onServiceClick: (s: Servic
     { title: lang === 'en' ? 'Quantum Intel Fusion' : 'Fusion du renseignement Quantum', icon: <Cpu />, desc: lang === 'en' ? '🧠 AI predicts threats 72hrs ahead. Intelligence superiority over any global adversary.' : '🧠 L\'IA prédit les menaces 72 heures à l\'avance. Supériorité du renseignement sur tout adversaire global.', longDesc: 'By processing petabytes of signal intelligence in real-time, our Quantum AI identifies hostile intent before mobilization even begins.', requirements: ['Level 5 Clearances', 'Africa Command Node Access'] },
     { title: lang === 'en' ? 'Maritime Security & Piracy Defense' : 'Sécurité maritime et défense contre la piraterie', icon: <Anchor />, desc: lang === 'en' ? 'Securing critical sea lanes and vessels against piracy and maritime insurgency in deep waters.' : 'Sécurisation des voies maritimes critiques et des navires contre la piraterie et l\'insurrection maritime.', longDesc: 'Rapid response maritime teams equipped with heavy kinetics for escort and interdiction in high-risk zones.', requirements: ['Deep Water Logistics', 'Maritime Command Access'] },
     { title: lang === 'en' ? 'Cyber-Electronic Warfare' : 'Guerre cyber-électronique', icon: <Wifi />, desc: lang === 'en' ? 'Advanced electronic countermeasures and signal disruption to neutralize enemy comms and digital assets.' : 'Contre-mesures électroniques avancées et perturbation des signaux pour neutraliser les actifs numériques ennemis.', longDesc: 'Offensive and defensive digital operations aimed at complete control of the electromagnetic spectrum.', requirements: ['Quantum Node Uplink', 'SIGINT Authorization'] },
-    { title: lang === 'en' ? 'Rapid Response Deployment' : 'Déploiement à réponse rapide', icon: <PlaneTakeoff />, desc: lang === 'en' ? 'Global tactical teams ready for boots-on-ground deployment within 4 hours of mission briefing.' : 'Équipes tactiques mondiales prêtes à un déploiement sur le terrain dans les 4 heures suivant le briefing.', longDesc: 'High-speed air-to-ground insertion of elite assets into volatile environments for immediate containment.', requirements: ['Uplink Ready-Status', 'Tactical Aircraft Reserved'] },
+    { title: lang === 'en' ? 'Rapid Response Deployment' : 'Déploiement à réponse rapide', icon: <PlaneTakeoff />, desc: lang === 'en' ? 'Global tactical teams ready for boots-on-ground deployment within 4 hours of mission briefing.' : 'Équipes tactiques mondiales prêtes à un déployement sur le terrain dans les 4 heures suivant le briefing.', longDesc: 'High-speed air-to-ground insertion of elite assets into volatile environments for immediate containment.', requirements: ['Uplink Ready-Status', 'Tactical Aircraft Reserved'] },
     { title: lang === 'en' ? 'Diplomatic & VIP Protection' : 'Protection diplomatique et VIP', icon: <Users />, desc: lang === 'en' ? 'Elite Tier-1 close protection details for high-stakes leadership in unstable global theaters.' : 'Détails de protection rapprochée d\'élite de niveau 1 pour les dirigeants à enjeux élevés.', longDesc: 'Low-profile or high-visibility protection details designed to ensure zero breach of the asset perimeter.', requirements: ['Tier-1 Personnel Only', 'Asset Dossier Finalized'] },
     { title: lang === 'en' ? 'Tactical Logistics & Extraction' : 'Logistique tactique et extraction', icon: <Truck />, desc: lang === 'en' ? 'Supply chain security and emergency extraction in hostile zones where traditional logistics fail.' : 'Sécurité de la chaîne d\'approvisionnement et extraction d\'urgence dans les zones hostiles.', longDesc: 'Hardened convoy operations and air-extraction of critical materiel and high-priority personnel.', requirements: ['Convoy Asset Shell', 'Extraction Zone Clear'] },
     { title: lang === 'en' ? 'Aerial Surveillance & Drone Ops' : 'Surveillance aérienne et opérations de drones', icon: <Eye />, desc: lang === 'en' ? 'Unblinking persistent surveillance and kinetic drone strikes using quantum-fused sensor feeds.' : 'Surveillance persistante sans faille et frappes de drones cinétiques via des capteurs quantum.', longDesc: 'Persistent eyes-on-target using stealth UAVs integrated with Africa Command Center monitoring.', requirements: ['Drone Hive Active', 'Video Feed Link 01'] },
@@ -434,16 +635,18 @@ const AdvantageSection = ({ onServiceClick, lang }: { onServiceClick: (s: Servic
     { title: lang === 'en' ? 'Border & Territory Enforcement' : 'Application des frontières et des territoires', icon: <Map />, desc: lang === 'en' ? 'Sovereign-level border security and territory denial using persistent monitoring and rapid response.' : 'Sécurité frontalière au niveau souverain et déni de territoire utilisant une surveillance persistante.', longDesc: 'Integration of persistent sensors and fast-strike teams to ensure absolute territorial integrity.', requirements: ['Regional Map Grid 5', 'Territory Denial Assets'] }
   ];
 
+  const displayedAdvantages = limit ? advantages.slice(0, limit) : advantages;
+
   return (
-    <section className="py-24 bg-white crosshair crosshair-tl crosshair-br border-t border-gray-100">
+    <section className="py-24 crosshair crosshair-tl crosshair-br border-t border-gray-100">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <span className="font-stencil text-army-olive text-xs tracking-[0.5em] uppercase block mb-4">{lang === 'en' ? 'Core Capabilities' : 'Capacités Clés'}</span>
           <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tight">{lang === 'en' ? 'OPERATIONAL SUPREMACY' : 'SUPRÉMATIE OPÉRATIONNELLE'}</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 shadow-2xl">
-          {advantages.map((item, i) => (
-            <div key={i} onClick={() => onServiceClick(item as any)} className="bg-white p-12 hover:bg-gray-50 transition-all group cursor-pointer border-b md:border-b-0">
+          {displayedAdvantages.map((item, i) => (
+            <div key={i} onClick={() => onServiceClick(item as any)} className="bg-white/95 p-12 hover:bg-gray-50 transition-all group cursor-pointer border-b md:border-b-0">
               <div className="text-army-olive mb-10 group-hover:scale-110 transition-transform duration-500">{React.cloneElement(item.icon as any, { size: 56, strokeWidth: 1 })}</div>
               <h3 className="text-2xl font-bold uppercase mb-6 tracking-tight group-hover:text-army-olive">{item.title}</h3>
               <p className="text-gray-500 text-lg leading-relaxed mb-10 line-clamp-3">{item.desc}</p>
@@ -451,6 +654,16 @@ const AdvantageSection = ({ onServiceClick, lang }: { onServiceClick: (s: Servic
             </div>
           ))}
         </div>
+        {limit && (
+           <div className="mt-16 text-center">
+             <button 
+               onClick={onViewAll}
+               className="btn-tactical border-2 border-army-olive text-army-olive hover:bg-army-olive hover:text-white"
+             >
+                {translations[lang].common.viewAll}
+             </button>
+           </div>
+        )}
       </div>
     </section>
   );
@@ -525,7 +738,7 @@ const MilitaryShopTeaser = ({ onArmoryClick, lang }: { onArmoryClick: () => void
     }
   ] : [
     { 
-      img: 'https://images.unsplash.com/photo-1594938291221-94f18cbb5660?auto=format&fit=crop&q=80&w=600', 
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/IMG_4128-Photoroom-Copy.webp?raw=true', 
       name: 'Gilet Tactique Quantum', 
       price: '$499', 
       desc: 'NIJ Niveau IV + capteurs quantum. "A survécu au RPG."' 
@@ -537,20 +750,20 @@ const MilitaryShopTeaser = ({ onArmoryClick, lang }: { onArmoryClick: () => void
       desc: '9mm silencieux, réglé par vétéran pour létalité instantanée.' 
     },
     { 
-      img: 'https://images.unsplash.com/photo-1584346133934-a3afd2a33c4c?auto=format&fit=crop&q=80&w=600', 
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/41jKkmpk7lL.jpg?raw=true', 
       name: 'Kit Intel Nexus', 
       price: '$2,500', 
       desc: 'NOUVEAU ! Hub drone crypté pour reconnaissance d\'élite.' 
     },
     { 
-      img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=600', 
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/61hyYrJfmDL._AC_UF1000,1000_QL80_.jpg?raw=true', 
       name: 'Bottes Reaper', 
       price: '$299', 
       desc: 'Renforcées acier. Conçues pour l\'enfer afghan.' 
     }
   ];
   return (
-    <section className="py-24 bg-gray-50 crosshair crosshair-tr crosshair-bl border-y border-gray-100">
+    <section className="py-24 bg-gray-50/90 crosshair crosshair-tr crosshair-bl border-y border-gray-100">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div><span className="font-stencil text-army-olive text-xs tracking-[0.5em] uppercase block mb-4">{lang === 'en' ? 'Logistics Supply' : 'Approvisionnement Logistique'}</span><h2 className="text-5xl md:text-6xl font-bold uppercase tracking-tight">{lang === 'en' ? 'MILITARY SHOP' : 'MAGASIN MILITAIRE'}</h2></div>
@@ -589,7 +802,8 @@ const ConsultancyView = ({ lang }: { lang: Language }) => {
   ];
 
   return (
-    <div className="pt-24 min-h-screen bg-white">
+    <div className="pt-24 min-h-screen relative">
+      <PageBackground />
       <section className="bg-gray-900 py-32 relative overflow-hidden text-center text-white">
         <div className="absolute inset-0 footage-overlay opacity-20"></div>
         <MDiv initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} className="relative z-10 px-6">
@@ -601,8 +815,8 @@ const ConsultancyView = ({ lang }: { lang: Language }) => {
 
       <section className="py-24 container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start mb-24">
-          <div>
-            <h2 className="text-5xl font-bold uppercase mb-10 tracking-tighter border-l-8 border-army-olive pl-8">{lang === 'en' ? 'EXECUTIVE INTELLIGENCE' : 'INTELLIGENCE EXÉCUTIVE'}</h2>
+          <div className="bg-white/90 p-8 border-l-8 border-army-olive shadow-xl backdrop-blur-sm">
+            <h2 className="text-5xl font-bold uppercase mb-10 tracking-tighter">{lang === 'en' ? 'EXECUTIVE INTELLIGENCE' : 'INTELLIGENCE EXÉCUTIVE'}</h2>
             <p className="text-gray-500 text-xl leading-relaxed mb-8">
               {lang === 'en' ? 'At QRSI, consultancy isn\'t about slide decks; it\'s about war-gaming the future. Our leadership, composed of decorated Veteran USA Army Officers, applies decades of theater-level strategy to corporate and sovereign risk.' : 'Chez QRSI, le conseil n\'est pas une question de diapositives ; c\'est une question de wargaming du futur. Notre direction, composée d\'officiers vétérans décorés de l\'armée américaine, applique des décennies de stratégie.'}
             </p>
@@ -612,7 +826,7 @@ const ConsultancyView = ({ lang }: { lang: Language }) => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {consultantDetails.map((item, i) => (
-              <div key={i} className="bg-gray-50 p-8 border border-gray-100 hover:border-army-olive transition-all group">
+              <div key={i} className="bg-white/95 p-8 border border-gray-100 hover:border-army-olive transition-all group backdrop-blur-sm shadow-md">
                 <div className="text-army-olive mb-6 group-hover:scale-110 transition-transform">{item.icon}</div>
                 <h4 className="font-bold text-xl uppercase mb-4 tracking-tighter">{item.title}</h4>
                 <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
@@ -630,8 +844,8 @@ const ContactSection = ({ lang }: { lang: Language }) => {
   return (
     <section id="contact-home" className="py-24 container mx-auto px-6 relative crosshair crosshair-tl crosshair-br">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
-        <div>
-          <h2 className="text-4xl font-bold uppercase mb-12 tracking-tight border-l-8 border-army-olive pl-8">{lang === 'en' ? 'CONTACT US' : 'CONTACTEZ-NOUS'}</h2>
+        <div className="bg-white/90 p-8 backdrop-blur-sm shadow-xl border-l-8 border-army-olive">
+          <h2 className="text-4xl font-bold uppercase mb-12 tracking-tight">{lang === 'en' ? 'CONTACT US' : 'CONTACTEZ-NOUS'}</h2>
           <p className="text-gray-500 text-xl leading-relaxed mb-12 italic">"{lang === 'en' ? 'Ready to deploy the Reaper? Secure your operations with QRSI. America great? We make it happen everywhere.' : 'Prêt à déployer le Reaper ? Sécurisez vos opérations avec QRSI. L\'Amérique est grande ? Nous la rendons possible partout.'}"</p>
           <div className="space-y-10">
             <div className="flex gap-6"><MapPin className="text-army-olive" /><div><h4 className="font-bold uppercase tracking-widest text-sm">{lang === 'en' ? 'Primary HQ' : 'Siège Principal'}</h4><p className="text-gray-400">{lang === 'en' ? 'Settled in Africa for strategic ops reach' : 'Installé en Afrique pour une portée opérationnelle stratégique'}</p></div></div>
@@ -803,7 +1017,15 @@ export default function App() {
                </div>
             </section>
 
-            <AdvantageSection onServiceClick={(s) => setSelectedHomeService(s)} lang={lang} />
+            <AdvantageSection 
+              onServiceClick={(s) => setSelectedHomeService(s)} 
+              lang={lang} 
+              limit={3} 
+              onViewAll={() => { setView('capabilities'); window.scrollTo(0, 0); }}
+            />
+            
+            <PortfolioSection lang={lang} />
+            
             <BodyguardSection lang={lang} />
             <ReaperDoctrine lang={lang} />
             <MilitaryShopTeaser onArmoryClick={() => { setView('armory'); window.scrollTo(0, 0); }} lang={lang} />
@@ -818,7 +1040,8 @@ export default function App() {
         )}
         
         {view === 'about' && (
-          <div className="pt-24 min-h-screen bg-white">
+          <div className="pt-24 min-h-screen relative">
+            <PageBackground />
             <section className="bg-gray-900 py-40 relative overflow-hidden text-center text-white">
               <div className="absolute inset-0 footage-overlay opacity-20"></div>
               <MDiv initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 px-6">
@@ -827,8 +1050,8 @@ export default function App() {
                 <p className="text-white/60 text-2xl max-w-4xl mx-auto font-light leading-relaxed">{tAbout.forged}</p>
               </MDiv>
             </section>
-            <section className="py-24 container mx-auto px-6 text-xl text-gray-500 leading-relaxed max-w-5xl text-center md:text-left">
-              <div className="p-12 bg-gray-50 border-l-8 border-army-olive shadow-sm mb-16 relative overflow-hidden">
+            <section className="py-24 container mx-auto px-6 text-xl text-gray-500 leading-relaxed max-w-5xl text-center md:text-left relative z-10">
+              <div className="p-12 bg-white/90 border-l-8 border-army-olive shadow-xl mb-16 relative overflow-hidden backdrop-blur-sm">
                  <h2 className="text-4xl font-bold uppercase mb-8 text-gray-900 font-stencil tracking-tighter">{tAbout.narrativeHead}</h2>
                  <p className="mb-8 font-bold text-army-olive text-2xl leading-tight">{tAbout.quote}</p>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-600">
@@ -838,11 +1061,11 @@ export default function App() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-                 <div>
+                 <div className="bg-white/80 p-8 backdrop-blur-sm shadow-lg">
                     <h3 className="text-4xl font-bold uppercase mb-6 tracking-tight text-gray-900 font-stencil">{tAbout.supremacy}</h3>
                     <p className="mb-6">{tAbout.supremacyDesc}</p>
                  </div>
-                 <img src="https://images.unsplash.com/photo-1544022613-e842b7c6c5f6?auto=format&fit=crop&q=80&w=800" className="w-full clip-tactical shadow-2xl grayscale sepia-[0.3]" alt="Operator" />
+                 <img src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-dbgalvanis-6562583.jpg?raw=true" className="w-full clip-tactical shadow-2xl grayscale sepia-[0.3]" alt="Operator" />
               </div>
               
               <ReaperDoctrine lang={lang} />
@@ -853,23 +1076,31 @@ export default function App() {
         {view === 'consultancy' && <ConsultancyView lang={lang} />}
 
         {view === 'bodyguard' && (
-          <div className="pt-24 min-h-screen bg-white">
+          <div className="pt-24 min-h-screen relative">
+            <PageBackground />
             <section className="bg-gray-900 py-40 relative overflow-hidden text-center text-white">
               <div className="absolute inset-0 footage-overlay opacity-20"></div>
               <MDiv initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} className="relative z-10 px-6">
                 <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">{lang === 'en' ? 'Specialized Support' : 'Support Spécialisé'}</span>
                 <h1 className="text-7xl font-bold uppercase tracking-tighter mb-8 font-stencil">{translations[lang].nav.bodyguard}</h1>
-                <p className="text-white/60 text-2xl max-w-4xl mx-auto font-light leading-relaxed tracking-widest uppercase">{lang === 'en' ? 'Preserving your most important moments.' : 'Préserver vos moments les plus importants.'}</p>
+                <p className="text-white/60 text-2xl max-w-4xl mx-auto font-light leading-relaxed tracking-widest uppercase">{lang === 'en' ? 'Absolute Integrity. Unblinking Overwatch.' : 'Intégrité Absolue. Veille Incessante.'}</p>
               </MDiv>
             </section>
-            <BodyguardSection lang={lang} />
+            <div className="relative z-10">
+              <BodyguardSection lang={lang} />
+              <DetectiveSection lang={lang} />
+              <InvestigationSection lang={lang} />
+            </div>
           </div>
         )}
 
         {view === 'capabilities' && (
-          <div className="pt-24">
-            <AdvantageSection onServiceClick={(s) => setSelectedHomeService(s)} lang={lang} />
-            <BodyguardSection lang={lang} />
+          <div className="pt-24 min-h-screen relative">
+            <PageBackground />
+            <div className="relative z-10">
+              <AdvantageSection onServiceClick={(s) => setSelectedHomeService(s)} lang={lang} />
+              <BodyguardSection lang={lang} />
+            </div>
             <AnimatePresence>
               {selectedHomeService && (
                 <ServiceModal service={selectedHomeService} onClose={() => setSelectedHomeService(null)} lang={lang} />
@@ -879,20 +1110,26 @@ export default function App() {
         )}
 
         {view === 'armory' && (
-          <div className="pt-24 min-h-screen bg-white">
-             <section className="bg-white py-12 border-b border-gray-100">
+          <div className="pt-24 min-h-screen relative">
+             <PageBackground />
+             <section className="bg-white/90 py-12 border-b border-gray-100 relative z-10 backdrop-blur-sm">
                 <div className="container mx-auto px-6 text-center">
                    <h1 className="text-6xl font-bold uppercase tracking-tighter font-stencil text-gray-900">{translations[lang].nav.armory}</h1>
                 </div>
              </section>
-             <MilitaryShopTeaser onArmoryClick={() => {}} lang={lang} />
+             <div className="relative z-10">
+               <MilitaryShopTeaser onArmoryClick={() => {}} lang={lang} />
+             </div>
           </div>
         )}
 
         {view === 'contact' && (
-          <div className="pt-24 min-h-screen bg-white">
-            <ContactSection lang={lang} />
-            <RecruitmentSection lang={lang} />
+          <div className="pt-24 min-h-screen relative">
+            <PageBackground />
+            <div className="relative z-10">
+              <ContactSection lang={lang} />
+              <RecruitmentSection lang={lang} />
+            </div>
           </div>
         )}
       </main>
@@ -941,7 +1178,7 @@ export default function App() {
           </div>
           <div className="w-20 h-20 bg-army-olive rounded-full overflow-hidden border-4 border-white shadow-2xl hover:scale-110 transition-all duration-300 ring-4 ring-army-olive/10 relative">
             <img 
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150" 
+              src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-25-meddy-2158672407-35534150.jpg?raw=true" 
               alt="Support" 
               className="w-full h-full object-cover grayscale sepia-[0.5] hue-rotate-[60deg]" 
             />
