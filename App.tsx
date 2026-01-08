@@ -61,7 +61,12 @@ import {
   Plus,
   Trash2,
   Clock,
-  History
+  History,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Facebook,
+  Mail
 } from 'lucide-react';
 
 const MDiv = motion.div as any;
@@ -120,7 +125,7 @@ const translations = {
     hero: [
       { title: "QUANTUM REAPER STEEL", subtitle: "Silent. Precise. Inevitable." },
       { title: "TACTICAL INTELLIGENCE", subtitle: "Global Hub Settled in Africa." },
-      { title: "INDUSTRIAL DEFENSE", subtitle: "USA Army Veteran Leadership." },
+      { title: "INDUSTRIAL DEFENSE", subtitle: "Army Veteran Leadership." },
       { title: "TACTICAL SUPREMACY", subtitle: "Urban Dominance & Secure Extraction." },
       { title: "SAVANNA OVERWATCH", subtitle: "Precision Defense in Africa's Heart." }
     ],
@@ -264,7 +269,7 @@ const translations = {
     hero: [
       { title: "QUANTUM REAPER STEEL", subtitle: "Silencieux. Précis. Inévitable." },
       { title: "INTELLIGENCE TACTIQUE", subtitle: "Hub Global Installé en Afrique." },
-      { title: "DÉFENSE INDUSTRIELLE", subtitle: "Direction par Vétérans de l'Armée USA." },
+      { title: "DÉFENSE INDUSTRIELLE", subtitle: "Direction par Vétérans de l'Armée ." },
       { title: "SUPRÉMATIE TACTIQUE", subtitle: "Dominance Urbaine et Extraction Sécurisée." },
       { title: "VEILLE SAVANE", subtitle: "Défense de Précision au Coeur de l'Afrique." }
     ],
@@ -838,323 +843,127 @@ const VIPBodyguardSection = ({ lang, onServiceClick }: { lang: Language, onServi
   );
 };
 
-const DetectiveSection = ({ lang, onServiceClick }: { lang: Language, onServiceClick?: (s: ServiceItem) => void }) => {
-  const t = translations[lang].detective;
-  const serviceItem: ServiceItem = {
-    title: t.title,
-    desc: t.desc1,
-    longDesc: t.longDesc,
-    icon: <Eye />,
-    requirements: t.reqs
-  };
-
-  return (
-    <section className="py-24 bg-gray-50/80 crosshair crosshair-tr crosshair-bl border-t border-gray-100">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col lg:flex-row items-stretch">
-          <div className="lg:w-1/2 relative min-h-[500px] lg:min-h-[600px] mb-12 lg:mb-0 overflow-hidden shadow-2xl">
-            <img 
-              src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-cottonbro-7266269.jpg?raw=true" 
-              className="w-full h-full object-cover grayscale brightness-75 contrast-125 hover:grayscale-0 transition-all duration-1000" 
-              alt="Private Detective Ops" 
-            />
-            <div className="absolute inset-0 footage-overlay opacity-20"></div>
-          </div>
-          <div className="lg:w-1/2 py-20 lg:pl-20 flex flex-col justify-center">
-            <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-12 text-gray-900 font-stencil">{t.title}</h2>
-            <div className="space-y-8 max-w-xl">
-              <p className="text-lg md:text-xl text-gray-900 font-bold leading-relaxed border-l-8 border-army-olive pl-8">
-                {t.desc1}
-              </p>
-              <p className="text-base md:text-lg text-gray-500 leading-relaxed">
-                {t.desc2}
-              </p>
-              {onServiceClick && (
-                <button 
-                  onClick={() => onServiceClick(serviceItem)}
-                  className="mt-6 flex items-center gap-2 text-army-olive font-bold text-xs tracking-[0.3em] uppercase hover:scale-105 transition-transform"
-                >
-                  {translations[lang].common.expand} <ArrowRight size={14} />
-                </button>
-              )}
-            </div>
-            <div className="mt-12 flex gap-4 text-army-olive items-center">
-              <Eye size={40} strokeWidth={1} />
-              <Fingerprint size={40} strokeWidth={1} />
-              <span className="text-[11px] font-stencil tracking-[0.4em] uppercase font-bold ml-4">{t.expert}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const InvestigationSection = ({ lang, onServiceClick }: { lang: Language, onServiceClick?: (s: ServiceItem) => void }) => {
-  const t = translations[lang].investigation;
-  const serviceItem: ServiceItem = {
-    title: t.title,
-    desc: t.desc1,
-    longDesc: t.longDesc,
-    icon: <SearchCode />,
-    requirements: t.reqs
-  };
-
-  return (
-    <section className="py-24 bg-white/80 crosshair crosshair-tl crosshair-br border-t border-gray-100">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col lg:flex-row-reverse items-stretch">
-          <div className="lg:w-1/2 relative min-h-[500px] lg:min-h-[600px] mb-12 lg:mb-0 overflow-hidden shadow-2xl">
-            <img 
-              src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-cottonbro-7319087.jpg?raw=true" 
-              className="w-full h-full object-cover grayscale brightness-50 hover:grayscale-0 hover:brightness-100 transition-all duration-1000" 
-              alt="Tactical Investigation" 
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-black/40 to-transparent"></div>
-          </div>
-          <div className="lg:w-1/2 py-20 lg:pr-20 flex flex-col justify-center">
-            <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-12 text-gray-900 font-stencil">{t.title}</h2>
-            <div className="space-y-8 max-w-xl">
-              <p className="text-lg md:text-xl text-gray-900 font-bold leading-relaxed border-r-8 border-red-600 pr-8 text-right">
-                {t.desc1}
-              </p>
-              <p className="text-base md:text-lg text-gray-500 leading-relaxed text-right">
-                {t.desc2}
-              </p>
-              {onServiceClick && (
-                <button 
-                  onClick={() => onServiceClick(serviceItem)}
-                  className="mt-6 flex items-center gap-2 text-red-600 font-bold text-xs tracking-[0.3em] uppercase ml-auto hover:scale-105 transition-transform"
-                >
-                  {translations[lang].common.expand} <ArrowRight size={14} />
-                </button>
-              )}
-            </div>
-            <div className="mt-12 flex gap-4 text-red-600 items-center justify-end">
-              <span className="text-[11px] font-stencil tracking-[0.4em] uppercase font-bold mr-4">{t.expert}</span>
-              <SearchCode size={40} strokeWidth={1} />
-              <Search size={40} strokeWidth={1} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const BlogView = ({ lang, blogs }: { lang: Language, blogs: BlogEntry[] }) => {
-  const t = translations[lang].blog;
-  return (
-    <div className="pt-24 min-h-screen relative">
-      <PageBackground />
-      <section className="bg-gray-900 py-32 relative overflow-hidden text-center text-white">
-        <div className="absolute inset-0 footage-overlay opacity-20"></div>
-        <MDiv initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} className="relative z-10 px-6">
-          <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">{t.subtitle}</span>
-          <h1 className="text-7xl font-bold uppercase tracking-tighter mb-8 font-stencil">{t.title}</h1>
-        </MDiv>
-      </section>
-
-      <section className="py-24 container mx-auto px-6 relative z-10">
-        {blogs.length === 0 ? (
-          <div className="text-center py-20 bg-white/80 border-2 border-dashed border-gray-200">
-            <ZapOff size={64} className="mx-auto text-gray-300 mb-6" />
-            <p className="font-bold text-gray-400 uppercase tracking-widest">{t.noPosts}</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {blogs.map((entry, i) => (
-              <MDiv 
-                key={entry.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white border border-gray-100 shadow-xl group hover:border-army-olive transition-colors flex flex-col"
-              >
-                <div className="relative aspect-video overflow-hidden bg-gray-100">
-                  <img src={entry.img} alt={entry.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                  <div className="absolute top-4 left-4 bg-army-olive text-white px-4 py-1 text-[10px] font-bold tracking-widest uppercase">{entry.category}</div>
-                </div>
-                <div className="p-8 flex-grow">
-                  <div className="flex items-center gap-4 text-gray-400 text-[10px] font-bold tracking-widest uppercase mb-6">
-                    <Clock size={12} /> {entry.date}
-                    <span className="text-army-olive">/</span>
-                    <History size={12} /> {entry.author}
-                  </div>
-                  <h3 className="text-2xl font-bold uppercase tracking-tight mb-6 line-clamp-2">{entry.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-8 line-clamp-3">{entry.content}</p>
-                  <button className="flex items-center gap-2 text-army-olive font-bold text-xs tracking-[0.3em] uppercase group-hover:translate-x-2 transition-transform">
-                    {t.readMore} <ArrowRight size={14} />
-                  </button>
-                </div>
-              </MDiv>
-            ))}
-          </div>
-        )}
-      </section>
-    </div>
-  );
-};
-
-const AdminView = ({ lang, onAddBlog, blogs, onDeleteBlog }: { lang: Language, onAddBlog: (b: BlogEntry) => void, blogs: BlogEntry[], onDeleteBlog: (id: string) => void }) => {
-  const t = translations[lang].blog;
-  const [formData, setFormData] = useState({
-    title: '',
-    category: 'TACTICAL OPS',
-    content: '',
-    img: ''
-  });
-  const [posted, setPosted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newEntry: BlogEntry = {
-      id: Date.now().toString(),
-      title: formData.title,
-      date: new Date().toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }),
-      category: formData.category,
-      content: formData.content,
-      img: formData.img || "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=2000",
-      author: "COMMANDER_X"
-    };
-    onAddBlog(newEntry);
-    setPosted(true);
-    setFormData({ title: '', category: 'TACTICAL OPS', content: '', img: '' });
-    setTimeout(() => setPosted(false), 3000);
-  };
-
-  return (
-    <div className="pt-24 min-h-screen relative">
-      <PageBackground />
-      <section className="bg-army-dark py-24 relative overflow-hidden text-center text-white border-b border-army-olive/30">
-        <div className="absolute inset-0 camo-pattern opacity-10"></div>
-        <MDiv className="relative z-10 px-6">
-          <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">{t.adminSubtitle}</span>
-          <h1 className="text-7xl font-bold uppercase tracking-tighter mb-8 font-stencil">{t.adminTitle}</h1>
-        </MDiv>
-      </section>
-
-      <div className="container mx-auto px-6 py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
-        <div className="bg-white p-12 shadow-2xl border-l-8 border-army-olive">
-          <h2 className="text-3xl font-bold uppercase mb-12 tracking-tight border-b-2 border-gray-100 pb-4 flex items-center gap-4">
-            <Plus className="text-army-olive" /> NEW INTEL ENTRY
-          </h2>
-          {posted ? (
-            <div className="text-center py-20">
-              <ShieldCheck size={80} className="text-army-olive mx-auto mb-6 animate-pulse" />
-              <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-widest">{t.formSuccess}</h3>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="space-y-2">
-                <label className="text-[11px] font-stencil tracking-[0.4em] text-army-drab uppercase">{t.formTitle}</label>
-                <input required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} type="text" className="w-full border-b-2 border-gray-100 py-4 outline-none focus:border-army-olive font-bold text-lg tracking-widest uppercase bg-transparent" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[11px] font-stencil tracking-[0.4em] text-army-drab uppercase">{t.formCategory}</label>
-                <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full border-b-2 border-gray-100 py-4 outline-none focus:border-army-olive font-bold text-lg tracking-widest uppercase bg-transparent">
-                  <option>TACTICAL OPS</option>
-                  <option>QUANTUM INTEL</option>
-                  <option>FIELD REPORT</option>
-                  <option>GLOBAL SECURITY</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="text-[11px] font-stencil tracking-[0.4em] text-army-drab uppercase">{t.formImg}</label>
-                <input value={formData.img} onChange={e => setFormData({...formData, img: e.target.value})} type="url" placeholder="https://..." className="w-full border-b-2 border-gray-100 py-4 outline-none focus:border-army-olive font-bold text-sm tracking-widest bg-transparent" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[11px] font-stencil tracking-[0.4em] text-army-drab uppercase">{t.formContent}</label>
-                <textarea required rows={5} value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} className="w-full border-b-2 border-gray-100 py-4 outline-none focus:border-army-olive font-bold text-lg tracking-widest uppercase bg-transparent resize-none"></textarea>
-              </div>
-              <button type="submit" className="btn-tactical bg-army-olive text-white w-full uppercase tracking-[0.5em]">{t.formSubmit}</button>
-            </form>
-          )}
-        </div>
-
-        <div className="bg-gray-900 p-12 shadow-2xl relative overflow-hidden text-white">
-          <div className="absolute top-0 right-0 w-32 h-32 camo-pattern opacity-10"></div>
-          <h2 className="text-3xl font-bold uppercase mb-12 tracking-tight border-b-2 border-white/10 pb-4 flex items-center gap-4">
-            <Terminal className="text-army-olive" /> ACTIVE DATABASE
-          </h2>
-          <div className="space-y-6 max-h-[600px] overflow-y-auto pr-4">
-            {blogs.map(blog => (
-              <div key={blog.id} className="bg-white/5 p-6 border border-white/10 flex justify-between items-center group hover:bg-white/10 transition-colors">
-                <div>
-                  <h4 className="font-bold uppercase tracking-tight text-white mb-2 line-clamp-1">{blog.title}</h4>
-                  <p className="text-xs text-army-drab font-mono">{blog.date} // {blog.id}</p>
-                </div>
-                <button onClick={() => onDeleteBlog(blog.id)} className="text-red-600 hover:text-red-400 transition-colors p-2">
-                  <Trash2 size={20} />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ServiceModal = ({ service, onClose, lang }: { service: ServiceItem, onClose: () => void, lang: Language }) => (
-  <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
-    <MDiv initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
-    <MDiv
-      initial={{ opacity: 0, scale: 0.9, y: 50 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 50 }}
-      className="relative w-full max-w-5xl bg-white shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden border-l-8 border-army-olive"
-    >
-      <button onClick={onClose} className="absolute top-6 right-6 text-gray-400 hover:text-black transition-colors z-50"><X size={32} /></button>
-      <div className="flex flex-col md:flex-row max-h-[90vh] overflow-y-auto">
-        <div className="md:w-1/3 bg-gray-100 p-12 flex flex-col items-center justify-center border-r border-gray-200">
-           <div className="text-army-olive mb-8">{React.cloneElement(service.icon as any, { size: 100, strokeWidth: 1 })}</div>
-           <div className="text-center">
-             <h4 className="font-stencil text-army-drab text-xs tracking-widest uppercase mb-4">{translations[lang].common.ident}</h4>
-             <span className="py-1 px-4 bg-army-olive text-white text-[10px] font-bold tracking-[0.2em] uppercase">{translations[lang].common.tier1}</span>
-           </div>
-        </div>
-        <div className="md:w-2/3 p-12 bg-white">
-           <h2 className="text-4xl font-bold uppercase mb-8 tracking-tighter text-gray-900 border-b-4 border-gray-100 pb-6">{service.title}</h2>
-           <p className="text-gray-500 text-xl leading-relaxed mb-10">{service.longDesc}</p>
-           <div className="space-y-6 mb-12">
-             <h5 className="font-bold text-xs tracking-[0.4em] uppercase text-army-drab flex items-center gap-2"><Terminal size={14} /> {translations[lang].common.missionReq}</h5>
-             <div className="grid grid-cols-1 gap-3">
-               {service.requirements.map((req, i) => (
-                 <div key={i} className="flex items-center gap-4 bg-gray-50 p-4 border border-gray-100"><ChevronRight size={18} className="text-army-olive" /><span className="font-bold text-sm text-gray-800 uppercase tracking-widest">{req}</span></div>
-               ))}
-             </div>
-           </div>
-           <button onClick={onClose} className="btn-tactical bg-army-olive text-white w-full">{translations[lang].common.request}</button>
-        </div>
-      </div>
-    </MDiv>
-  </div>
-);
-
 const AdvantageSection = ({ onServiceClick, lang, limit, onViewAll }: { onServiceClick: (s: ServiceItem) => void, lang: Language, limit?: number, onViewAll?: () => void }) => {
   const advantages: ServiceItem[] = [
     { 
-      title: lang === 'en' ? 'High-Value Target Elimination' : 'Élimination de cibles de haute valeur', 
+      title: 'High-Value Target Elimination', 
       icon: <Skull />, 
-      desc: lang === 'en' ? 'Surgical elimination of priority threats using advanced kinetic and quantum-assisted targeting.' : 'Élimination chirurgicale des menaces prioritaires utilisant un ciblage cinétique avancé.', 
+      desc: 'Surgical elimination of priority threats using advanced kinetic and quantum-assisted targeting.', 
       longDesc: 'Direct kinetic intervention for high-priority threats. Operates under terminal phase protocols with 100% confirmation reliability.', 
       requirements: ['Tier-1 Asset Allocation', 'Quantum Uplink Active'],
       img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_rbpulnrbpulnrbpu.png?raw=true'
     },
     { 
-      title: lang === 'en' ? 'Hostage Recovery Operations' : 'Opérations de récupération d\'otages', 
+      title: 'Hostage Recovery Operations', 
       icon: <LifeBuoy />, 
-      desc: lang === 'en' ? 'Specialized search and rescue in high-threat environments. Rapid extraction of key personnel.' : 'Recherche et sauvetage spécialisés dans des environnements à haut risque. Extraction rapide du personnel clé.', 
+      desc: 'Specialized search and rescue in high-threat environments. Rapid extraction of key personnel.', 
       longDesc: 'Dynamic entry and recovery of personnel in compromised environments. Utilizing stealth and superior kinetic force.', 
       requirements: ['Africa Command Hub Support', 'SAR Specialization'],
       img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_6tpocw6tpocw6tpo.png?raw=true'
     },
     { 
-      title: lang === 'en' ? 'Counter-Terrorism Strikes' : 'Frappes de contre-terrorisme', 
+      title: 'Counter-Terrorism Strikes', 
       icon: <Zap />, 
-      desc: lang === 'en' ? 'Pre-emptive strikes against localized and global insurgent threats using precision tactical assets.' : 'Frappes préventives contre les menaces insurgées locales et mondiales à l\'aide d\'actifs tactiques de précision.', 
+      desc: 'Pre-emptive strikes against localized and global insurgent threats using precision tactical assets.', 
       longDesc: 'Disruption of insurgent command nodes. Tactical superiority over non-state actors using superior tech.', 
       requirements: ['Authorization Key 001', 'Heavy Munitions Allocation'],
       img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_94yo1q94yo1q94yo.png?raw=true'
+    },
+    { 
+      title: 'Corporate Asset Protection', 
+      icon: <Shield />, 
+      desc: '360-degree protection shells for industrial infrastructure and high-net-worth leadership.', 
+      longDesc: 'Full spectrum protection of multi-national corporate assets including executive protection details.', 
+      requirements: ['24/7 Monitoring', 'Encrypted Comms Hub'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_8dx6zx8dx6zx8dx6.png?raw=true'
+    },
+    { 
+      title: 'Government Facility Security', 
+      icon: <Building2 />, 
+      desc: 'Hardened security protocols for sovereign interests and mission-critical facilities.', 
+      longDesc: 'Integration of heavy physics barriers with quantum electronic countermeasures for absolute site integrity.', 
+      requirements: ['National Level Clearance', 'Hardened Site Survey'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_df9hb0df9hb0df9h.png?raw=true'
+    },
+    { 
+      title: 'Quantum Intel Fusion', 
+      icon: <Cpu />, 
+      desc: '🧠 AI predicts threats 72hrs ahead. Intelligence superiority over any global adversary.', 
+      longDesc: 'By processing petabytes of signal intelligence in real-time, our Quantum AI identifies hostile intent before mobilization even begins.', 
+      requirements: ['Level 5 Clearances', 'Africa Command Node Access'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_8dx6zx8dx6zx8dx6.png?raw=true'
+    },
+    { 
+      title: 'Maritime Security & Piracy Defense', 
+      icon: <Anchor />, 
+      desc: 'Securing critical sea lanes and vessels against piracy and maritime insurgency in deep waters.', 
+      longDesc: 'Rapid response maritime teams equipped with heavy kinetics for escort and interdiction in high-risk zones.', 
+      requirements: ['Deep Water Logistics', 'Maritime Command Access'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_mn6tvqmn6tvqmn6t.png?raw=true'
+    },
+    { 
+      title: 'Cyber-Electronic Warfare', 
+      icon: <Wifi />, 
+      desc: 'Advanced electronic countermeasures and signal disruption to neutralize enemy comms.', 
+      longDesc: 'Offensive and defensive digital operations aimed at complete control of the electromagnetic spectrum.', 
+      requirements: ['Quantum Node Uplink', 'SIGINT Authorization'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_9snsyt9snsyt9sns.png?raw=true'
+    },
+    { 
+      title: 'Rapid Response Deployment', 
+      icon: <PlaneTakeoff />, 
+      desc: 'Global tactical teams ready for boots-on-ground deployment within 4 hours of mission briefing.', 
+      longDesc: 'High-speed air-to-ground insertion of elite assets into volatile environments for immediate containment.', 
+      requirements: ['Uplink Ready-Status', 'Tactical Aircraft Reserved'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_i5a5si5a5si5a5si.png?raw=true'
+    },
+    { 
+      title: 'Diplomatic & VIP Protection', 
+      icon: <Users />, 
+      desc: 'Elite Tier-1 close protection details for high-stakes leadership in unstable global theaters.', 
+      longDesc: 'Low-profile or high-visibility protection details designed to ensure zero breach of the asset perimeter.', 
+      requirements: ['Tier-1 Personnel Only', 'Asset Dossier Finalized'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_6txcpt6txcpt6txc.png?raw=true'
+    },
+    { 
+      title: 'Tactical Logistics & Extraction', 
+      icon: <Truck />, 
+      desc: 'Supply chain security and emergency extraction in hostile zones where traditional logistics fail.', 
+      longDesc: 'Hardened convoy operations and air-extraction of critical materiel and high-priority personnel.', 
+      requirements: ['Convoy Asset Shell', 'Extraction Zone Clear'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_y9dzc3y9dzc3y9dz.png?raw=true'
+    },
+    { 
+      title: 'Aerial Surveillance & Drone Ops', 
+      icon: <Eye />, 
+      desc: 'Unblinking persistent surveillance and kinetic drone strikes using quantum-fused sensor feeds.', 
+      longDesc: 'Persistent eyes-on-target using stealth UAVs integrated with Africa Command Center monitoring.', 
+      requirements: ['Drone Hive Active', 'Video Feed Link 01'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_qy5rxtqy5rxtqy5r.png?raw=true'
+    },
+    { 
+      title: 'Critical Infrastructure Defense', 
+      icon: <Factory />, 
+      desc: 'Protection of energy, water, and data hubs using physics-based hardening and active kinetic shields.', 
+      longDesc: 'Complete security architecture for national and industrial critical infrastructure against sabotage.', 
+      requirements: ['Industrial Hardening Plan', 'Shield Node Online'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_a3dt3ga3dt3ga3dt.png?raw=true'
+    },
+    { 
+      title: 'Combat Search & Rescue (CSAR)', 
+      icon: <Activity />, 
+      desc: 'Deep-penetration recovery of injured personnel behind enemy lines under heavy fire.', 
+      longDesc: 'Medical extraction specialists trained for high-intensity recovery missions where every second counts.', 
+      requirements: ['Combat Medic Priority', 'SAR Uplink Frequency'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_94yo1q94yo1q94yo.png?raw=true'
+    },
+    { 
+      title: 'Border & Territory Enforcement', 
+      icon: <Map />, 
+      desc: 'Sovereign-level border security and territory denial using persistent monitoring.', 
+      longDesc: 'Integration of persistent sensors and fast-strike teams to ensure absolute territorial integrity.', 
+      requirements: ['Regional Map Grid 5', 'Territory Denial Assets'],
+      img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_y9dzc3y9dzc3y9dz.png?raw=true'
     }
   ];
 
@@ -1210,7 +1019,7 @@ const ReaperDoctrine = ({ lang }: { lang: Language }) => {
   const laws = lang === 'en' ? [
     { num: '01', title: 'Strike First, Silent', desc: 'Preempt or perish – intel wins wars. We do not wait for the threat to materialize; we erase it in the womb.' },
     { num: '02', title: 'Zero Mercy, Total Neutralization', desc: 'Threats don\'t walk away. Once a target is designated, terminal results are the only acceptable outcome.' },
-    { num: '03', title: 'Adapt or Adapt', desc: 'Quantum AI evolves mid-mission. We do not follow plans; we dominate the chaos as it unfolds.' },
+    { num: '03', title: 'Adapt or Die', desc: 'Quantum AI evolves mid-mission. We do not follow plans; we dominate the chaos as it unfolds.' },
     { num: '04', title: 'Personal Honor Code', desc: 'Loyalty to client > all. Breach of contract = Reaper target. We are the ultimate deterrent.' },
     { num: '05', title: 'Operational Supremacy', desc: 'We own the battlefield or we burn it. Absolute dominance is our baseline.' }
   ] : [
@@ -1282,47 +1091,128 @@ const MilitaryShopTeaser = ({ onArmoryClick, lang }: { onArmoryClick: () => void
 };
 
 const ConsultancyView = ({ lang }: { lang: Language }) => {
-  const consultantDetails = lang === 'en' ? [
-    { title: 'Strategic Risk Modeling', desc: 'Using Quantum AI to map adversary movements and predict destabilization events before they trigger.', icon: <SearchCode /> },
-    { title: 'Infrastructure Hardening', icon: <FileSearch />, desc: 'Comprehensive audits of physical and digital assets, conducted by ex-Special Forces physical penetration teams.' },
-    { title: 'Supply Chain Extraction', icon: <Globe />, desc: 'Securing critical resource channels in hostile theaters where traditional logistics have collapsed.' },
-    { title: 'Vetting & Counter-Intel', icon: <EyeOff />, desc: 'Deep-background verification and insider threat mitigation for multi-national corporate leadership.' }
-  ] : [
-    { title: 'Modélisation de risques stratégiques', desc: 'Utilisation de l\'IA Quantum pour cartographier les mouvements adverses et prédire la déstabilisation.', icon: <SearchCode /> },
-    { title: 'Renforcement d\'infrastructure', icon: <FileSearch />, desc: 'Audits complets d\'actifs physiques et numériques, réalisés par des équipes de pénétration ex-Forces Spéciales.' },
-    { title: 'Extraction de chaîne logistique', icon: <Globe />, desc: 'Sécurisation des canaux de ressources critiques dans des théâtres hostiles.' },
-    { title: 'Vérification et contre-renseignement', icon: <EyeOff />, desc: 'Vérification approfondie des antécédents et atténuation des menaces internes pour les dirigeants.' }
-  ];
-
   return (
     <div className="pt-24 min-h-screen relative">
       <PageBackground />
-      <section className="bg-gray-900 py-32 relative overflow-hidden text-center text-white">
-        <div className="absolute inset-0 footage-overlay opacity-20"></div>
-        <MDiv initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} className="relative z-10 px-6">
-          <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">{lang === 'en' ? 'Command Advisory' : 'Conseil de Commandement'}</span>
-          <h1 className="text-7xl font-bold uppercase tracking-tighter mb-8 font-stencil">{lang === 'en' ? 'STRATEGIC CONSULTANCY' : 'CONSEIL STRATÉGIQUE'}</h1>
-          <p className="text-white/60 text-2xl max-w-4xl mx-auto font-light leading-relaxed">{lang === 'en' ? 'Risk Mitigation. Intelligence Superiority. Global Continuity.' : 'Atténuation des risques. Supériorité du renseignement. Continuité globale.'}</p>
+      {/* Narrative Hero */}
+      <section className="bg-gray-900 py-40 relative overflow-hidden text-center text-white border-b border-army-olive/50">
+        <div className="absolute inset-0 footage-overlay opacity-30"></div>
+        <div className="absolute inset-0 camo-pattern opacity-10"></div>
+        <MDiv initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 px-6 max-w-6xl mx-auto">
+          <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">Command Advisory</span>
+          <h1 className="text-6xl md:text-[5rem] font-bold uppercase tracking-tighter mb-10 font-stencil leading-none">
+            QUANTUM REAPER STEEL INTERNATIONAL
+          </h1>
+          <p className="text-white/80 text-2xl max-w-5xl mx-auto font-light leading-relaxed border-l-4 border-army-olive pl-8 text-left italic">
+            "QUANTUM REAPER STEEL INTERNATIONAL stands as one of the the world's most advanced private security and military corporation, where cutting-edge quantum technology meets uncompromising lethality. We are not just a security company—we are the evolution of warfare itself."
+          </p>
         </MDiv>
       </section>
 
-      <section className="py-24 container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start mb-24">
-          <div className="bg-white/90 p-8 border-l-8 border-army-olive shadow-xl backdrop-blur-sm">
-            <h2 className="text-5xl font-bold uppercase mb-10 tracking-tighter">{lang === 'en' ? 'EXECUTIVE INTELLIGENCE' : 'INTELLIGENCE EXÉCUTIVE'}</h2>
-            <p className="text-gray-500 text-xl leading-relaxed mb-8">
-              {lang === 'en' ? 'At QRSI, consultancy isn\'t about slide decks; it\'s about war-gaming the future. Our leadership, composed of decorated Veteran USA Army Officers, applies decades of theater-level strategy to corporate and sovereign risk.' : 'Chez QRSI, le conseil n\'est pas une question de diapositives ; c\'est une question de wargaming du futur. Notre direction, composée d\'officiers vétérans décorés de l\'armée américaine, applique des décennies de stratégie.'}
-            </p>
+      {/* Main Content Sections */}
+      <section className="py-24 container mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start mb-32">
+          {/* Who We Are & Advantage */}
+          <div className="space-y-20">
+            <div className="bg-white/95 p-12 shadow-2xl border-l-8 border-army-olive backdrop-blur-sm relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 opacity-5"><Skull size={128} /></div>
+               <h2 className="text-4xl font-bold uppercase mb-8 tracking-tighter font-stencil text-gray-900">WHO WE ARE</h2>
+               <p className="text-gray-600 text-xl leading-relaxed mb-8">
+                 Born from the convergence of quantum science, tactical precision, and industrial might, QRSI represents the pinnacle of private military excellence. Our operators don't just neutralize threats—they redefine the very concept of security through technological supremacy and surgical precision.
+               </p>
+               <img src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-tima-miroshnichenko-6091866.jpg?raw=true" className="w-full h-80 object-cover clip-tactical grayscale brightness-75 hover:grayscale-0 transition-all duration-1000" alt="Tactical Ops" />
+            </div>
+
+            <div className="bg-army-dark p-12 shadow-2xl text-white border-r-8 border-army-olive relative overflow-hidden">
+               <div className="absolute inset-0 camo-pattern opacity-5"></div>
+               <h2 className="text-4xl font-bold uppercase mb-10 tracking-tighter font-stencil text-army-olive">OUR QUANTUM ADVANTAGE</h2>
+               <ul className="space-y-6">
+                 {[
+                   { label: "Quantum Intelligence Systems", desc: "Real-time battlefield analysis using quantum computing" },
+                   { label: "Molecular-Level Precision", desc: "Targeting accuracy beyond conventional capabilities" },
+                   { label: "Quantum Encryption", desc: "Unbreakable communications and data security" },
+                   { label: "Predictive Threat Assessment", desc: "Quantum algorithms that anticipate enemy movements" }
+                 ].map((item, i) => (
+                   <li key={i} className="flex gap-6 items-start group">
+                     <div className="p-2 bg-army-olive rounded-full group-hover:scale-125 transition-transform"><Cpu size={20} /></div>
+                     <div>
+                       <h4 className="font-bold uppercase tracking-widest text-lg mb-1">{item.label}</h4>
+                       <p className="text-white/60">{item.desc}</p>
+                     </div>
+                   </li>
+                 ))}
+               </ul>
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {consultantDetails.map((item, i) => (
-              <div key={i} className="bg-white/95 p-8 border border-gray-100 hover:border-army-olive transition-all group backdrop-blur-sm shadow-md">
-                <div className="text-army-olive mb-6 group-hover:scale-110 transition-transform">{item.icon}</div>
-                <h4 className="font-bold text-xl uppercase mb-4 tracking-tighter">{item.title}</h4>
-                <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+
+          {/* Doctrine, Strength, Dominance */}
+          <div className="space-y-20">
+            <div className="p-12 bg-army-olive text-white shadow-2xl relative overflow-hidden">
+               <div className="absolute -bottom-10 -right-10 opacity-10"><Target size={200} /></div>
+               <h2 className="text-4xl font-bold uppercase mb-8 tracking-tighter font-stencil border-b border-white/20 pb-4">THE REAPER DOCTRINE</h2>
+               <p className="text-xl italic leading-relaxed opacity-90 border-l-4 border-white pl-6">
+                 "Our operatives embody the Reaper philosophy: Silent. Precise. Inevitable. Every mission is executed with surgical precision, leaving no trace except the complete neutralization of threats. We don't engage in conflicts—we end them."
+               </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               <div className="bg-white p-8 border border-gray-100 shadow-xl border-t-8 border-army-accent">
+                 <h3 className="font-stencil text-army-accent text-2xl mb-6">STEEL-FORGED STRENGTH</h3>
+                 <ul className="space-y-4 text-sm font-bold uppercase tracking-widest text-gray-500">
+                   <li className="flex gap-2"><ChevronRight size={16} className="text-army-accent" /> Industrial Equipment</li>
+                   <li className="flex gap-2"><ChevronRight size={16} className="text-army-accent" /> Armored Personnel</li>
+                   <li className="flex gap-2"><ChevronRight size={16} className="text-army-accent" /> Zero-Failure protocols</li>
+                   <li className="flex gap-2"><ChevronRight size={16} className="text-army-accent" /> Resource Superiority</li>
+                 </ul>
+               </div>
+               <div className="bg-white p-8 border border-gray-100 shadow-xl border-t-8 border-army-olive">
+                 <h3 className="font-stencil text-army-olive text-2xl mb-6">INTERNATIONAL DOMINANCE</h3>
+                 <ul className="space-y-4 text-sm font-bold uppercase tracking-widest text-gray-500">
+                   <li className="flex gap-2"><ChevronRight size={16} className="text-army-olive" /> Global Response Teams</li>
+                   <li className="flex gap-2"><ChevronRight size={16} className="text-army-olive" /> Diplomatic Networks</li>
+                   <li className="flex gap-2"><ChevronRight size={16} className="text-army-olive" /> Multi-Jurisdictional</li>
+                   <li className="flex gap-2"><ChevronRight size={16} className="text-army-olive" /> Cultural Intelligence</li>
+                 </ul>
+               </div>
+            </div>
+
+            <div className="p-12 bg-gray-50 border-y-8 border-army-olive text-center relative">
+               <div className="max-w-2xl mx-auto">
+                 <h3 className="text-sm font-stencil tracking-[0.5em] text-army-drab mb-8 uppercase">MISSION STATEMENT</h3>
+                 <p className="text-3xl font-bold text-gray-900 italic leading-tight">
+                   "To provide quantum-enhanced security solutions that transcend conventional limitations, delivering absolute protection through technological supremacy and tactical excellence."
+                 </p>
+               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Client Portfolio & Final Promise */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
+           <div className="relative group overflow-hidden">
+             <img src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_df9hb0df9hb0df9h.png?raw=true" className="w-full h-full object-cover grayscale brightness-50 group-hover:scale-105 transition-all duration-1000" alt="Industrial Defense" />
+             <div className="absolute inset-0 p-12 flex flex-col justify-center bg-black/40">
+               <h2 className="text-4xl font-bold text-white uppercase mb-8 font-stencil tracking-widest">CLIENT PORTFOLIO</h2>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 {["Fortune 500 Corps", "Gov Agencies", "High-Net-Worth", "Critical Infra", "Int. Organizations"].map((client, i) => (
+                   <div key={i} className="flex items-center gap-4 text-white font-bold text-lg border-l-4 border-army-olive pl-4">
+                     <span className="text-army-olive font-stencil">0{i+1}</span> {client}
+                   </div>
+                 ))}
+               </div>
+             </div>
+           </div>
+
+           <div className="bg-army-drab/10 p-16 flex flex-col justify-center border-4 border-dashed border-army-olive/30">
+              <h2 className="text-5xl font-bold uppercase mb-8 tracking-tighter font-stencil text-gray-900">THE QRSI PROMISE</h2>
+              <p className="text-2xl text-gray-700 leading-relaxed mb-10 border-l-8 border-army-olive pl-8">
+                When conventional security fails, when governments cannot act, when the impossible becomes necessary—<strong>Quantum Reaper Steel International</strong> delivers. We are the force that operates beyond the reach of traditional military and law enforcement, providing solutions that others cannot even comprehend.
+              </p>
+              <div className="flex flex-col gap-4">
+                <span className="text-army-olive font-black text-2xl uppercase tracking-[0.2em] font-stencil">Contact us when failure is not an option.</span>
+                <span className="text-gray-400 text-sm uppercase tracking-widest font-bold">QUANTUM REAPER STEEL INTERNATIONAL // Precision. Power. Protection.</span>
               </div>
-            ))}
-          </div>
+           </div>
         </div>
       </section>
     </div>
@@ -1331,31 +1221,253 @@ const ConsultancyView = ({ lang }: { lang: Language }) => {
 
 const Footer = ({ setView, lang }: { setView: (v: ViewType) => void, lang: Language }) => {
   const t = translations[lang].nav;
+  const links = [
+    { name: t.home, id: 'home' },
+    { name: t.about, id: 'about' },
+    { name: t.capabilities, id: 'capabilities' },
+    { name: t.bodyguard, id: 'bodyguard' },
+    { name: t.consultancy, id: 'consultancy' },
+    { name: t.armory, id: 'armory' },
+    { name: t.blog, id: 'blog' },
+    { name: t.contact, id: 'contact' }
+  ];
+
   return (
     <footer className="bg-army-dark py-24 text-white relative crosshair crosshair-bl overflow-hidden border-t border-white/5">
       <div className="absolute inset-0 camo-pattern opacity-5 pointer-events-none"></div>
       <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-16 mb-24">
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-24">
           <div className="max-w-xs">
             <div className="flex items-center gap-3 mb-8 cursor-pointer group" onClick={() => { setView('home'); window.scrollTo(0, 0); }}>
               <Shell className="text-army-olive w-10 h-10 rotate-45 group-hover:rotate-90 transition-transform duration-500" />
               <span className="text-4xl font-bold tracking-tighter uppercase font-stencil">QRSI<span className="text-army-olive">.WAR</span></span>
             </div>
-          </div>
-          <div className="grid grid-cols-2 gap-12 md:gap-24">
-            <div className="space-y-6">
-              <h5 className="font-bold text-xs tracking-[0.4em] uppercase text-army-drab border-l-4 border-army-olive pl-4 mb-8">COMMAND</h5>
-              <button onClick={() => { setView('home'); window.scrollTo(0, 0); }} className="block text-gray-500 hover:text-white uppercase text-[11px] tracking-widest font-bold text-left transition-colors">{t.home}</button>
-              <button onClick={() => { setView('blog'); window.scrollTo(0, 0); }} className="block text-gray-500 hover:text-white uppercase text-[11px] tracking-widest font-bold text-left transition-colors">{t.blog}</button>
+            <p className="text-gray-500 text-sm leading-relaxed mb-10 uppercase tracking-widest">
+              NEXT GEN PRIVATE MILITARY EXCELLENCE. QUANTUM INTELLIGENCE. INDUSTRIAL MIGHT.
+            </p>
+            <div className="flex gap-4">
+              <button className="p-3 bg-white/5 hover:bg-army-olive rounded-full transition-colors text-white/40 hover:text-white"><Twitter size={18} /></button>
+              <button className="p-3 bg-white/5 hover:bg-army-olive rounded-full transition-colors text-white/40 hover:text-white"><Instagram size={18} /></button>
+              <button className="p-3 bg-white/5 hover:bg-army-olive rounded-full transition-colors text-white/40 hover:text-white"><Linkedin size={18} /></button>
+              <button className="p-3 bg-white/5 hover:bg-army-olive rounded-full transition-colors text-white/40 hover:text-white"><Facebook size={18} /></button>
             </div>
-            <div className="space-y-6">
-              <h5 className="font-bold text-xs tracking-[0.4em] uppercase text-army-drab border-l-4 border-army-olive pl-4 mb-8">LOGISTICS</h5>
-              <button onClick={() => { setView('admin'); window.scrollTo(0, 0); }} className="block text-gray-800 hover:text-army-olive uppercase text-[9px] tracking-widest font-bold text-left transition-colors">UPLINK ADMIN</button>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-12 md:gap-24">
+            <div className="space-y-4">
+              <h5 className="font-bold text-xs tracking-[0.4em] uppercase text-army-olive border-l-4 border-army-olive pl-4 mb-8">COMMAND</h5>
+              {links.slice(0, 4).map(link => (
+                <button key={link.id} onClick={() => { setView(link.id as ViewType); window.scrollTo(0, 0); }} className="block text-gray-500 hover:text-white uppercase text-[10px] tracking-widest font-bold text-left transition-colors">{link.name}</button>
+              ))}
+            </div>
+            <div className="space-y-4">
+              <h5 className="font-bold text-xs tracking-[0.4em] uppercase text-army-olive border-l-4 border-army-olive pl-4 mb-8">OPERATIONS</h5>
+              {links.slice(4).map(link => (
+                <button key={link.id} onClick={() => { setView(link.id as ViewType); window.scrollTo(0, 0); }} className="block text-gray-500 hover:text-white uppercase text-[10px] tracking-widest font-bold text-left transition-colors">{link.name}</button>
+              ))}
+            </div>
+            <div className="space-y-4">
+              <h5 className="font-bold text-xs tracking-[0.4em] uppercase text-army-olive border-l-4 border-army-olive pl-4 mb-8">RESOURCES</h5>
+              <button onClick={() => { setView('admin'); window.scrollTo(0, 0); }} className="block text-gray-700 hover:text-army-olive uppercase text-[9px] tracking-widest font-bold text-left transition-colors">SECURE UPLINK ADMIN</button>
+              <p className="text-gray-500 text-[9px] tracking-[0.2em] font-mono leading-relaxed uppercase">STATUS: 200 OK<br/>ENCRYPTION: AES-256<br/>ZONE: GLOBAL</p>
             </div>
           </div>
         </div>
+        <div className="pt-16 border-t border-white/5 text-center">
+            <p className="text-gray-600 text-[10px] tracking-[0.4em] uppercase font-bold leading-relaxed">© 2026 QUANTUM REAPER STEEL INTERNATIONAL. ALL CHANNELS MONITORED.</p>
+        </div>
       </div>
     </footer>
+  );
+};
+
+const ServiceModal = ({ service, onClose, lang }: { service: ServiceItem, onClose: () => void, lang: Language }) => {
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <MDiv 
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+        className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto relative shadow-2xl border-t-8 border-army-olive"
+      >
+        <button onClick={onClose} className="absolute top-6 right-6 text-gray-400 hover:text-army-olive transition-colors z-10">
+          <X size={32} />
+        </button>
+        
+        <div className="flex flex-col lg:flex-row">
+          <div className="lg:w-1/2 h-[300px] lg:h-auto overflow-hidden bg-gray-100">
+            {service.img && (
+              <img src={service.img} className="w-full h-full object-cover grayscale" alt={service.title} />
+            )}
+            <div className="absolute inset-0 footage-overlay opacity-20 pointer-events-none"></div>
+          </div>
+          <div className="lg:w-1/2 p-12">
+            <div className="mb-6 text-army-olive">{service.icon}</div>
+            <h2 className="text-4xl font-bold uppercase mb-6 tracking-tighter font-stencil text-gray-900">{service.title}</h2>
+            <p className="text-gray-500 text-lg leading-relaxed mb-8">{service.longDesc}</p>
+            
+            <div className="space-y-4">
+              <h4 className="text-[10px] font-black tracking-[0.4em] uppercase text-army-olive mb-4">{translations[lang].common.missionReq}</h4>
+              {service.requirements.map((req, i) => (
+                <div key={i} className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-gray-800 border-l-2 border-army-olive pl-4">
+                  {req}
+                </div>
+              ))}
+            </div>
+            
+            <button 
+              onClick={onClose}
+              className="mt-12 w-full py-4 bg-army-olive text-white font-black uppercase tracking-[0.3em] text-xs hover:bg-army-dark transition-colors"
+            >
+              ACKNOWLEDGED // CLOSE BRIEFING
+            </button>
+          </div>
+        </div>
+      </MDiv>
+    </div>
+  );
+};
+
+const BlogView = ({ lang, blogs }: { lang: Language, blogs: BlogEntry[] }) => {
+  const t = translations[lang].blog;
+  return (
+    <div className="pt-24 min-h-screen relative">
+      <PageBackground />
+      <section className="bg-gray-900 py-40 relative overflow-hidden text-center text-white">
+        <div className="absolute inset-0 footage-overlay opacity-20"></div>
+        <MDiv initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 px-6">
+          <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">Communication Hub</span>
+          <h1 className="text-7xl font-bold uppercase tracking-tighter mb-8 font-stencil">{t.title}</h1>
+          <p className="text-white/60 text-xl max-w-2xl mx-auto uppercase tracking-widest">{t.subtitle}</p>
+        </MDiv>
+      </section>
+
+      <section className="py-24 container mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 gap-16 max-w-5xl mx-auto">
+          {blogs.length === 0 ? (
+            <div className="text-center py-20 bg-white/50 backdrop-blur-sm border border-dashed border-gray-200">
+               <p className="font-bold text-gray-400 tracking-widest uppercase">{t.noPosts}</p>
+            </div>
+          ) : (
+            blogs.map((blog) => (
+              <MDiv 
+                key={blog.id} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="bg-white shadow-2xl border border-gray-100 overflow-hidden flex flex-col md:flex-row group"
+              >
+                <div className="md:w-2/5 relative h-[300px] md:h-auto overflow-hidden">
+                  <img src={blog.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" alt={blog.title} />
+                  <div className="absolute inset-0 footage-overlay opacity-10 pointer-events-none"></div>
+                </div>
+                <div className="md:w-3/5 p-12 flex flex-col justify-center">
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="text-army-olive font-black text-[10px] tracking-[0.4em] uppercase bg-army-olive/10 px-3 py-1">{blog.category}</span>
+                    <span className="text-gray-400 text-[10px] font-bold tracking-widest">{blog.date}</span>
+                  </div>
+                  <h2 className="text-3xl font-bold uppercase mb-6 tracking-tighter group-hover:text-army-olive transition-colors">{blog.title}</h2>
+                  <p className="text-gray-500 leading-relaxed mb-8">{blog.content}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">BY: {blog.author}</span>
+                    <button className="flex items-center gap-2 text-army-olive font-black text-[10px] tracking-[0.4em] uppercase group-hover:translate-x-2 transition-transform">
+                      {t.readMore} <ChevronRight size={14} />
+                    </button>
+                  </div>
+                </div>
+              </MDiv>
+            ))
+          )}
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const AdminView = ({ lang, onAddBlog, blogs, onDeleteBlog }: { lang: Language, onAddBlog: (b: BlogEntry) => void, blogs: BlogEntry[], onDeleteBlog: (id: string) => void }) => {
+  const t = translations[lang].blog;
+  const [formData, setFormData] = useState({
+    title: '',
+    category: '',
+    content: '',
+    img: '',
+    author: 'COMMANDER_X'
+  });
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newBlog: BlogEntry = {
+      ...formData,
+      id: Date.now().toString(),
+      date: new Date().toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }).toUpperCase()
+    };
+    onAddBlog(newBlog);
+    setFormData({ title: '', category: '', content: '', img: '', author: 'COMMANDER_X' });
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), 5000);
+  };
+
+  return (
+    <div className="pt-24 min-h-screen relative bg-gray-50">
+      <div className="container mx-auto px-6 py-24 max-w-4xl">
+        <div className="bg-white p-12 shadow-2xl border-t-8 border-red-600 mb-12 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-5"><ShieldAlert size={120} /></div>
+          <h1 className="text-4xl font-bold uppercase mb-4 tracking-tighter font-stencil text-gray-900">{t.adminTitle}</h1>
+          <p className="text-gray-500 font-bold uppercase tracking-widest text-xs mb-10">{t.adminSubtitle}</p>
+          
+          <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">{t.formTitle}</label>
+                <input required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} type="text" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">{t.formCategory}</label>
+                <input required value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} type="text" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">{t.formImg}</label>
+              <input required value={formData.img} onChange={e => setFormData({...formData, img: e.target.value})} type="url" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">{t.formContent}</label>
+              <textarea required value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} rows={6} className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold" />
+            </div>
+            
+            <button type="submit" className="w-full py-6 bg-red-600 text-white font-black uppercase tracking-[0.5em] text-xs hover:bg-red-700 transition-all transform hover:scale-[1.02] shadow-xl">
+              {t.formSubmit}
+            </button>
+          </form>
+
+          {success && (
+            <MDiv initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-6 bg-green-50 border-l-4 border-green-500 text-green-700 font-bold uppercase text-xs tracking-widest">
+              {t.formSuccess}
+            </MDiv>
+          )}
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="font-stencil text-xl uppercase tracking-widest text-gray-400 mb-6 px-4">Active Intel Logs</h3>
+          {blogs.map(blog => (
+            <div key={blog.id} className="bg-white p-6 shadow-lg border border-gray-100 flex justify-between items-center group hover:border-army-olive transition-colors">
+              <div className="flex items-center gap-6">
+                 <div className="w-16 h-16 bg-gray-100 overflow-hidden clip-tactical shrink-0">
+                    <img src={blog.img} className="w-full h-full object-cover grayscale" alt="" />
+                 </div>
+                 <div>
+                    <h4 className="font-bold uppercase tracking-tight text-gray-900 group-hover:text-army-olive transition-colors">{blog.title}</h4>
+                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{blog.date} // {blog.category}</span>
+                 </div>
+              </div>
+              <button onClick={() => onDeleteBlog(blog.id)} className="p-3 text-gray-300 hover:text-red-600 hover:bg-red-50 transition-all rounded-full">
+                <Trash2 size={20} />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -1467,16 +1579,96 @@ export default function App() {
             <section className="bg-gray-900 py-40 relative overflow-hidden text-center text-white">
               <div className="absolute inset-0 footage-overlay opacity-20"></div>
               <MDiv initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 px-6">
-                <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">Command Doctrine</span>
-                <h1 className="text-7xl md:text-9xl font-bold uppercase tracking-tighter mb-8 font-stencil">{translations[lang].nav.about}</h1>
+                <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">{lang === 'en' ? 'Command Doctrine' : 'Doctrine de Commandement'}</span>
+                <h1 className="text-7xl md:text-9xl font-bold uppercase tracking-tighter mb-8 font-stencil">{lang === 'en' ? 'WHO WE ARE' : 'QUI SOMMES-NOUS'}</h1>
+                <p className="text-white/60 text-2xl max-w-4xl mx-auto font-light leading-relaxed">{tAbout.forged}</p>
               </MDiv>
             </section>
+
             <section className="py-24 container mx-auto px-6 text-xl text-gray-500 leading-relaxed max-w-7xl relative z-10">
               <div className="p-12 bg-white/90 border-l-8 border-army-olive shadow-xl mb-16 relative overflow-hidden backdrop-blur-sm">
-                 <h2 className="text-4xl font-bold uppercase mb-8 text-gray-900 font-stencil tracking-tighter">THE NARRATIVE</h2>
+                 <h2 className="text-4xl font-bold uppercase mb-8 text-gray-900 font-stencil tracking-tighter">{tAbout.narrativeHead}</h2>
                  <p className="mb-8 font-bold text-army-olive text-2xl leading-tight">{tAbout.quote}</p>
-                 <p>{tAbout.fullIntro}</p>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-600">
+                    <div className="flex gap-4"><MapPin className="text-army-olive shrink-0" /><p>{lang === 'en' ? 'Settled in Africa for strategic ops reach' : 'Installé en Afrique pour une portée opérationnelle'}</p></div>
+                    <div className="flex gap-4"><Cpu className="text-army-olive shrink-0" /><p>{lang === 'en' ? 'Quantum tech + industrial steel = threats erased' : 'Techno Quantum + Acier industriel = menaces effacées'}</p></div>
+                 </div>
               </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+                <div className="space-y-12">
+                   <div className="border-l-4 border-army-olive pl-8">
+                     <p className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-tighter">{tAbout.fullIntro}</p>
+                     <h3 className="text-5xl font-bold text-army-olive mb-6 font-stencil">{tAbout.evolutionTitle}</h3>
+                     <p className="text-gray-500 text-lg leading-relaxed">{tAbout.evolutionDesc}</p>
+                   </div>
+                   
+                   <div className="bg-gray-900 text-white p-10 clip-tactical shadow-2xl">
+                     <h4 className="text-2xl font-bold mb-6 text-army-olive flex items-center gap-3"><Cpu className="text-army-olive" /> {tAbout.quantumAdvantage}</h4>
+                     <ul className="space-y-4">
+                       {tAbout.quantumList.map((item, i) => (
+                         <li key={i} className="flex gap-4 items-start text-sm border-b border-white/5 pb-4 last:border-0"><ChevronRight size={16} className="text-army-olive shrink-0 mt-1" /><span>{item}</span></li>
+                       ))}
+                     </ul>
+                   </div>
+
+                   <div className="bg-army-olive text-white p-10 clip-tactical shadow-2xl">
+                     <h4 className="text-2xl font-bold mb-6 flex items-center gap-3"><Skull /> {tAbout.doctrineTitle}</h4>
+                     <p className="text-sm italic leading-relaxed opacity-90">{tAbout.doctrineDesc}</p>
+                   </div>
+                </div>
+
+                <div className="space-y-12">
+                   <div className="bg-gray-100 p-10 border-t-8 border-army-olive shadow-lg">
+                     <h4 className="text-2xl font-bold mb-6 text-gray-900 flex items-center gap-3"><ShieldCheck className="text-army-olive" /> {tAbout.strengthTitle}</h4>
+                     <ul className="grid grid-cols-1 gap-4">
+                       {tAbout.strengthList.map((item, i) => (
+                         <li key={i} className="flex gap-4 items-center text-sm font-bold uppercase tracking-wider text-gray-600"><div className="w-2 h-2 bg-army-olive rounded-full" />{item}</li>
+                       ))}
+                     </ul>
+                   </div>
+
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="bg-white border border-gray-200 p-8 shadow-md">
+                         <h4 className="font-stencil text-army-olive mb-4 flex items-center gap-2"><Globe size={18}/> {tAbout.dominanceTitle}</h4>
+                         <ul className="space-y-2 text-xs text-gray-500">
+                           {tAbout.dominanceList.map((item, i) => <li key={i}>- {item}</li>)}
+                         </ul>
+                      </div>
+                      <div className="bg-white border border-gray-200 p-8 shadow-md">
+                         <h4 className="font-stencil text-army-olive mb-4 flex items-center gap-2"><Building2 size={18}/> {tAbout.portfolioTitle}</h4>
+                         <ul className="space-y-2 text-xs text-gray-500">
+                           {tAbout.portfolioList.map((item, i) => <li key={i}>- {item}</li>)}
+                         </ul>
+                      </div>
+                   </div>
+
+                   <div className="bg-gray-50 p-10 border-r-8 border-army-accent text-right">
+                      <h4 className="text-xl font-bold mb-4 text-army-accent uppercase font-stencil">{tAbout.promiseTitle}</h4>
+                      <p className="text-sm text-gray-600 leading-relaxed mb-6">{tAbout.promiseDesc}</p>
+                      <p className="text-xs font-bold text-army-olive tracking-widest uppercase">{tAbout.failureLabel}</p>
+                   </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col lg:flex-row gap-16 items-center mb-16">
+                 <div className="lg:w-1/2 bg-white/80 p-8 backdrop-blur-sm shadow-lg border-l-8 border-army-olive">
+                    <h3 className="text-5xl font-bold uppercase mb-6 tracking-tight text-gray-900 font-stencil">{tAbout.supremacy}</h3>
+                    <p className="text-lg leading-relaxed text-gray-500 mb-6">{tAbout.supremacyDesc}</p>
+                    <div className="flex gap-4 text-army-olive mt-8">
+                       <Zap size={32} /><Target size={32} /><Lock size={32} />
+                    </div>
+                 </div>
+                 <div className="lg:w-1/2 grid grid-cols-2 gap-4">
+                    <div className="relative overflow-hidden clip-tactical shadow-2xl h-[400px] mt-12">
+                      <img src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-dbgalvanis-6562583.jpg?raw=true" className="w-full h-full object-cover grayscale sepia-[0.3] hover:grayscale-0 transition-all duration-1000" alt="Tactical Operator 1" />
+                    </div>
+                    <div className="relative overflow-hidden clip-tactical shadow-2xl h-[400px]">
+                      <img src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_6tpocw6tpocw6tpo.png?raw=true" className="w-full h-full object-cover grayscale brightness-75 contrast-125 hover:grayscale-0 transition-all duration-1000" alt="Tactical Operator 2" />
+                    </div>
+                 </div>
+              </div>
+              
               <ReaperDoctrine lang={lang} />
             </section>
           </div>
@@ -1523,30 +1715,183 @@ export default function App() {
         {view === 'contact' && (
           <div className="pt-24 min-h-screen relative">
             <PageBackground />
-            <div className="relative z-10">
-              <section className="py-24 container mx-auto px-6">
-                 <div className="bg-white p-12 shadow-2xl border border-gray-100">
-                    <h2 className="text-4xl font-bold uppercase mb-12 tracking-tight font-stencil">CONTACT QRSI COMMAND</h2>
-                    <p className="text-gray-500 text-xl leading-relaxed mb-12 italic">"Ready to deploy the Reaper? Secure your operations with QRSI."</p>
-                    <div className="flex gap-10">
-                      <div className="flex gap-6"><MapPin className="text-army-olive" /><div><h4 className="font-bold uppercase tracking-widest text-sm">HQ AFRICA</h4></div></div>
-                    </div>
+            {/* Contact Hero */}
+            <section className="bg-gray-900 py-40 relative overflow-hidden text-center text-white">
+              <div className="absolute inset-0 footage-overlay opacity-30"></div>
+              <div className="absolute inset-0 camo-pattern opacity-10"></div>
+              <MDiv initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 px-6">
+                <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">Command Uplink</span>
+                <h1 className="text-7xl md:text-9xl font-bold uppercase tracking-tighter mb-8 font-stencil">CONTACT</h1>
+                <p className="text-white/60 text-2xl max-w-4xl mx-auto font-light tracking-widest uppercase">Direct line to global operations</p>
+              </MDiv>
+            </section>
+
+            <div className="relative z-10 py-24">
+              <section className="container mx-auto px-6">
+                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
+                   {/* Contact Form */}
+                   <div className="bg-white p-12 shadow-2xl border-l-8 border-army-olive relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-8 opacity-5"><Send size={100} /></div>
+                      <h2 className="text-4xl font-bold uppercase mb-4 tracking-tighter font-stencil text-gray-900">TRANSMIT ORDERS</h2>
+                      <p className="text-gray-500 font-bold uppercase text-xs tracking-widest mb-10 border-b border-gray-100 pb-4">READY TO DEPLOY REAPERS? SECURE YOUR EMPIRE.</p>
+                      
+                      <form className="space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">Identity</label>
+                            <input type="text" placeholder="FULL NAME / CODE" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold uppercase tracking-widest text-sm" />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">Secure Channel</label>
+                            <input type="email" placeholder="EMAIL ADDRESS" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold uppercase tracking-widest text-sm" />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">Mission Type</label>
+                          <select className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold uppercase tracking-widest text-sm appearance-none">
+                            <option>TACTICAL PROTECTION</option>
+                            <option>INTEL CONSULTANCY</option>
+                            <option>ARMORY PROCUREMENT</option>
+                            <option>URGENT EXTRACTION</option>
+                          </select>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">Encryption Message</label>
+                          <textarea rows={5} placeholder="BRIEF MISSION PARAMETERS" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold uppercase tracking-widest text-sm resize-none"></textarea>
+                        </div>
+                        <button type="submit" className="w-full btn-tactical bg-army-olive text-white shadow-xl">
+                          TRANSMIT REQUEST <ArrowRight className="ml-4" />
+                        </button>
+                      </form>
+                   </div>
+
+                   {/* Location & Nodes */}
+                   <div className="flex flex-col gap-8">
+                      <div className="bg-gray-900 p-12 shadow-2xl text-white border-r-8 border-army-olive flex-grow relative overflow-hidden group">
+                         <div className="absolute inset-0 camo-pattern opacity-10"></div>
+                         <h2 className="text-4xl font-bold uppercase mb-10 tracking-tighter font-stencil text-army-olive">GLOBAL NODES</h2>
+                         
+                         <div className="space-y-12">
+                           <div className="flex gap-8 group/node">
+                             <div className="p-4 bg-army-olive rounded-full h-fit group-hover/node:scale-125 transition-transform"><MapPin size={24} /></div>
+                             <div>
+                               <h3 className="font-stencil text-2xl text-white mb-2 uppercase tracking-widest">HQ AFRICA</h3>
+                               <p className="text-white/60 text-lg leading-relaxed font-light">
+                                 Strategic Operations Center<br/>
+                                 Sector 7, Central Hub<br/>
+                                 Africa Deployment Zone
+                               </p>
+                             </div>
+                           </div>
+
+                           <div className="flex gap-8 group/node">
+                             <div className="p-4 bg-army-olive rounded-full h-fit group-hover/node:scale-125 transition-transform"><Radio size={24} /></div>
+                             <div>
+                               <h3 className="font-stencil text-2xl text-white mb-2 uppercase tracking-widest">SIGNAL COMMS</h3>
+                               <p className="text-white/60 text-lg font-mono">
+                                 SECURE_LINE: +1 800-REAPER-1<br/>
+                                 ENCRYPTED_MAIL: COMMAND@QRSI.WAR
+                               </p>
+                             </div>
+                           </div>
+
+                           <div className="flex gap-8 group/node">
+                             <div className="p-4 bg-army-olive rounded-full h-fit group-hover/node:scale-125 transition-transform"><Clock size={24} /></div>
+                             <div>
+                               <h3 className="font-stencil text-2xl text-white mb-2 uppercase tracking-widest">OPS AVAILABILITY</h3>
+                               <p className="text-white/60 text-lg uppercase tracking-widest">24/7/365 // ZERO DOWNTIME</p>
+                             </div>
+                           </div>
+                         </div>
+                         
+                         <div className="mt-12 p-8 border-2 border-dashed border-army-olive/30 bg-army-olive/5">
+                            <h4 className="font-black text-army-olive text-[10px] tracking-[0.5em] uppercase mb-4">TACTICAL STATUS</h4>
+                            <div className="flex items-center gap-4">
+                               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                               <span className="text-xs font-bold tracking-widest text-green-500">OPERATORS READY FOR DEPLOYMENT</span>
+                            </div>
+                         </div>
+                      </div>
+
+                      <div className="h-64 relative overflow-hidden clip-tactical shadow-2xl">
+                         <img src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_udk2h4udk2h4udk2.png?raw=true" className="w-full h-full object-cover grayscale brightness-50" alt="Tactical Response" />
+                         <div className="absolute inset-0 flex items-center justify-center">
+                            <h3 className="text-white text-4xl font-stencil uppercase tracking-[0.3em] drop-shadow-2xl">OVERWATCH</h3>
+                         </div>
+                         <div className="absolute inset-0 footage-overlay opacity-20"></div>
+                      </div>
+                   </div>
                  </div>
               </section>
             </div>
           </div>
         )}
+
+        {/* Pre-Footer Standing By Section */}
+        <section className="bg-army-dark py-16 border-t-4 border-army-olive relative overflow-hidden">
+          <div className="absolute inset-0 camo-pattern opacity-5"></div>
+          <div className="container mx-auto px-6 text-center relative z-10">
+            <h2 className="text-white text-3xl md:text-5xl font-bold uppercase tracking-tighter font-stencil mb-4 drop-shadow-lg">
+              STANDING BY – TRANSMIT ORDERS
+            </h2>
+            <p className="text-army-olive text-xl font-bold uppercase tracking-[0.2em]">
+              Ready to deploy Reapers? Secure your empire
+            </p>
+          </div>
+        </section>
       </main>
+
       <Footer setView={setView} lang={lang} />
       
       {/* Floating Tactical Contact Hub */}
       <div className="fixed bottom-6 right-6 z-[150] flex flex-col items-end gap-4">
-        <MA href="https://wa.me/18007774927" target="_blank" rel="noopener noreferrer" whileHover={{ x: -10 }} className="group flex items-center gap-4 cursor-pointer">
-          <div className="bg-white px-6 py-2 rounded-lg shadow-xl text-[10px] font-bold text-gray-800 border-l-4 border-[#25D366] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">Direct Uplink</div>
-          <div className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-2xl border-4 border-white">
+        {/* Telegram restoration */}
+        <MA 
+          href="https://t.me/qrsi_command" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          whileHover={{ x: -10 }} 
+          className="group flex items-center gap-4 cursor-pointer"
+        >
+          <div className="bg-white px-6 py-2 rounded-lg shadow-xl text-[10px] font-bold text-gray-800 border-l-4 border-[#0088cc] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">
+            {lang === 'en' ? 'Command Link (Telegram)' : 'Lien Commandement'}
+          </div>
+          <div className="w-14 h-14 bg-[#0088cc] rounded-full flex items-center justify-center text-white shadow-2xl hover:scale-110 transition-all border-4 border-white">
+            <Send size={24} />
+          </div>
+        </MA>
+
+        {/* WhatsApp Uplink */}
+        <MA 
+          href="https://wa.me/18007774927" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          whileHover={{ x: -10 }} 
+          className="group flex items-center gap-4 cursor-pointer"
+        >
+          <div className="bg-white px-6 py-2 rounded-lg shadow-xl text-[10px] font-bold text-gray-800 border-l-4 border-[#25D366] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">
+            {lang === 'en' ? 'Direct Uplink (WhatsApp)' : 'Liaison Directe'}
+          </div>
+          <div className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-2xl border-4 border-white hover:scale-110 transition-all">
             <MessageCircle size={24} />
           </div>
         </MA>
+
+        {/* Tactical Avatar Badge */}
+        <div className="group flex flex-col items-end cursor-pointer">
+          <div className="bg-white px-8 py-4 rounded-xl shadow-2xl mb-4 text-xs font-bold text-gray-800 border-l-8 border-army-olive hidden group-hover:block transition-all uppercase tracking-widest animate-in slide-in-from-right-4">
+            {lang === 'en' ? 'OPERATOR STANDING BY.' : 'OPÉRATEUR EN ATTENTE.'}
+            <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-b border-r border-gray-100 rotate-45"></div>
+          </div>
+          <div className="w-20 h-20 bg-army-olive rounded-full overflow-hidden border-4 border-white shadow-2xl hover:scale-110 transition-all duration-300 ring-4 ring-army-olive/10 relative">
+            <img 
+              src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-25-meddy-2158672407-35534150.jpg?raw=true" 
+              alt="Support" 
+              className="w-full h-full object-cover grayscale sepia-[0.5] hue-rotate-[60deg]" 
+            />
+            <div className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+          </div>
+        </div>
       </div>
     </div>
   );
