@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Shield, 
@@ -66,13 +65,18 @@ import {
   Instagram,
   Linkedin,
   Facebook,
-  Mail
+  Mail,
+  ChevronDown,
+  Layers,
+  Settings,
+  BrainCircuit,
+  UserRoundSearch
 } from 'lucide-react';
 
 const MDiv = motion.div as any;
 const MA = motion.a as any;
 
-type ViewType = 'home' | 'about' | 'capabilities' | 'armory' | 'contact' | 'consultancy' | 'bodyguard' | 'blog' | 'admin';
+type ViewType = 'home' | 'about' | 'capabilities' | 'armory' | 'contact' | 'consultancy' | 'defense-advisory' | 'bodyguard' | 'blog' | 'admin';
 type Language = 'en' | 'fr';
 
 interface ServiceItem {
@@ -388,6 +392,7 @@ const translations = {
 const Navbar = ({ currentView, setView, lang, setLang }: { currentView: ViewType, setView: (v: ViewType) => void, lang: Language, setLang: (l: Language) => void }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const t = translations[lang].nav;
 
   useEffect(() => {
@@ -401,7 +406,14 @@ const Navbar = ({ currentView, setView, lang, setLang }: { currentView: ViewType
     { name: t.about, id: 'about' },
     { name: t.capabilities, id: 'capabilities' },
     { name: t.bodyguard, id: 'bodyguard' },
-    { name: t.consultancy, id: 'consultancy' },
+    { 
+      name: t.consultancy, 
+      id: 'consultancy',
+      sub: [
+        { name: lang === 'en' ? 'STRATEGIC OVERVIEW' : 'APERÇU STRATÉGIQUE', id: 'consultancy' },
+        { name: lang === 'en' ? 'DEFENSE ADVISORY' : 'CONSEIL EN DÉFENSE', id: 'defense-advisory' }
+      ]
+    },
     { name: t.armory, id: 'armory' },
     { name: t.blog, id: 'blog' },
     { name: t.contact, id: 'contact' }
@@ -417,13 +429,43 @@ const Navbar = ({ currentView, setView, lang, setLang }: { currentView: ViewType
 
         <div className="hidden lg:flex items-center space-x-6">
           {links.map((link) => (
-            <button 
+            <div 
               key={link.id} 
-              onClick={() => { setView(link.id as ViewType); window.scrollTo(0, 0); }}
-              className={`font-bold text-[11px] tracking-[0.2em] uppercase relative py-2 ${currentView === link.id ? 'text-gray-900 nav-link-active' : 'text-gray-400 hover:text-army-olive transition-colors'}`}
+              className="relative group"
+              onMouseEnter={() => link.sub && setDropdownOpen(true)}
+              onMouseLeave={() => link.sub && setDropdownOpen(false)}
             >
-              {link.name}
-            </button>
+              <button 
+                onClick={() => { if(!link.sub) { setView(link.id as ViewType); window.scrollTo(0, 0); } }}
+                className={`font-bold text-[11px] tracking-[0.2em] uppercase relative py-2 flex items-center gap-1 ${currentView === link.id ? 'text-gray-900 nav-link-active' : 'text-gray-400 hover:text-army-olive transition-colors'}`}
+              >
+                {link.name}
+                {link.sub && <ChevronDown size={14} className={`transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />}
+              </button>
+              
+              {link.sub && (
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <MDiv 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute top-full left-0 bg-white shadow-2xl border-t-2 border-army-olive py-4 min-w-[200px]"
+                    >
+                      {link.sub.map((sub) => (
+                        <button 
+                          key={sub.id}
+                          onClick={() => { setView(sub.id as ViewType); window.scrollTo(0, 0); setDropdownOpen(false); }}
+                          className="w-full text-left px-6 py-3 text-[10px] font-black tracking-widest text-gray-400 hover:text-army-olive hover:bg-gray-50 transition-all uppercase"
+                        >
+                          {sub.name}
+                        </button>
+                      ))}
+                    </MDiv>
+                  )}
+                </AnimatePresence>
+              )}
+            </div>
           ))}
         </div>
 
@@ -460,13 +502,27 @@ const Navbar = ({ currentView, setView, lang, setLang }: { currentView: ViewType
                 <button onClick={() => setLang('fr')} className={`font-bold uppercase tracking-widest ${lang === 'fr' ? 'text-army-olive' : 'text-gray-400'}`}>Français</button>
               </div>
               {links.map((link) => (
-                <button 
-                  key={link.id} 
-                  onClick={() => { setView(link.id as ViewType); window.scrollTo(0, 0); setMobileMenu(false); }}
-                  className="font-bold text-left text-lg text-gray-800 uppercase tracking-widest"
-                >
-                  {link.name}
-                </button>
+                <div key={link.id} className="flex flex-col gap-2">
+                  <button 
+                    onClick={() => { if(!link.sub) { setView(link.id as ViewType); window.scrollTo(0, 0); setMobileMenu(false); } }}
+                    className="font-bold text-left text-lg text-gray-800 uppercase tracking-widest flex justify-between items-center"
+                  >
+                    {link.name}
+                  </button>
+                  {link.sub && (
+                    <div className="pl-4 flex flex-col gap-3 border-l-2 border-gray-100">
+                      {link.sub.map((sub) => (
+                        <button 
+                          key={sub.id}
+                          onClick={() => { setView(sub.id as ViewType); window.scrollTo(0, 0); setMobileMenu(false); }}
+                          className="text-left text-sm font-bold text-gray-400 uppercase tracking-widest"
+                        >
+                          {sub.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </MDiv>
@@ -1060,7 +1116,6 @@ const MilitaryShopTeaser = ({ onArmoryClick, lang }: { onArmoryClick: () => void
     { img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/61hyYrJfmDL._AC_UF1000,1000_QL80_.jpg?raw=true', name: 'Reaper Boots', price: '$299', desc: 'Steel-mesh reinforced. Built for Afghan and Iraq hellfires.' }
   ] : [
     { img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/IMG_4128-Photoroom-Copy.webp?raw=true', name: 'Gilet Tactique Quantum', price: '$499', desc: 'NIJ Niveau IV + capteurs quantum. "A survécu au RPG."' },
-    { img: 'https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=600', name: 'Pistolet Reaper', price: '$899', desc: '9mm silencieux, réglé par vétéran pour létalité instantanée.' },
     { img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/41jKkmpk7lL.jpg?raw=true', name: 'Kit Intel Nexus', price: '$2,500', desc: 'NOUVEAU ! Hub drone crypté pour reconnaissance d\'élite.' },
     { img: 'https://github.com/expertredactionjeandumont-lang/picture/blob/main/61hyYrJfmDL._AC_UF1000,1000_QL80_.jpg?raw=true', name: 'Bottes Reaper', price: '$299', desc: 'Renforcées acier. Conçues pour l\'enfer afghan.' }
   ];
@@ -1101,10 +1156,10 @@ const ConsultancyView = ({ lang }: { lang: Language }) => {
         <MDiv initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 px-6 max-w-6xl mx-auto">
           <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">Command Advisory</span>
           <h1 className="text-6xl md:text-[5rem] font-bold uppercase tracking-tighter mb-10 font-stencil leading-none">
-            QUANTUM REAPER STEEL INTERNATIONAL
+            STRATEGIC OVERVIEW
           </h1>
           <p className="text-white/80 text-2xl max-w-5xl mx-auto font-light leading-relaxed border-l-4 border-army-olive pl-8 text-left italic">
-            "QUANTUM REAPER STEEL INTERNATIONAL stands as one of the the world's most advanced private security and military corporation, where cutting-edge quantum technology meets uncompromising lethality. We are not just a security company—we are the evolution of warfare itself."
+            "QUANTUM REAPER STEEL INTERNATIONAL stands as one of the the world's most advanced private security and military corporation, where cutting-edge quantum technology meets uncompromising lethality."
           </p>
         </MDiv>
       </section>
@@ -1219,255 +1274,302 @@ const ConsultancyView = ({ lang }: { lang: Language }) => {
   );
 };
 
-const Footer = ({ setView, lang }: { setView: (v: ViewType) => void, lang: Language }) => {
-  const t = translations[lang].nav;
-  const links = [
-    { name: t.home, id: 'home' },
-    { name: t.about, id: 'about' },
-    { name: t.capabilities, id: 'capabilities' },
-    { name: t.bodyguard, id: 'bodyguard' },
-    { name: t.consultancy, id: 'consultancy' },
-    { name: t.armory, id: 'armory' },
-    { name: t.blog, id: 'blog' },
-    { name: t.contact, id: 'contact' }
-  ];
-
+const DefenseAdvisoryView = ({ lang }: { lang: Language }) => {
   return (
-    <footer className="bg-army-dark py-24 text-white relative crosshair crosshair-bl overflow-hidden border-t border-white/5">
-      <div className="absolute inset-0 camo-pattern opacity-5 pointer-events-none"></div>
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-24">
-          <div className="max-w-xs">
-            <div className="flex items-center gap-3 mb-8 cursor-pointer group" onClick={() => { setView('home'); window.scrollTo(0, 0); }}>
-              <Shell className="text-army-olive w-10 h-10 rotate-45 group-hover:rotate-90 transition-transform duration-500" />
-              <span className="text-4xl font-bold tracking-tighter uppercase font-stencil">QRSI<span className="text-army-olive">.WAR</span></span>
+    <div className="pt-24 min-h-screen relative">
+      <PageBackground />
+      {/* Narrative Hero */}
+      <section className="bg-gray-900 py-40 relative overflow-hidden text-center text-white border-b border-army-olive/50">
+        <div className="absolute inset-0 footage-overlay opacity-30"></div>
+        <div className="absolute inset-0 camo-pattern opacity-10"></div>
+        <MDiv initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 px-6 max-w-6xl mx-auto">
+          <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">Defense Consulting</span>
+          <h1 className="text-6xl md:text-[5rem] font-bold uppercase tracking-tighter mb-10 font-stencil leading-none">
+            DEFENSE ADVISORY
+          </h1>
+          <p className="text-white/80 text-xl max-w-4xl mx-auto font-light leading-relaxed uppercase tracking-widest">
+            Expert Guidance for Sovereign Defense & Global Contractors
+          </p>
+        </MDiv>
+      </section>
+
+      <section className="py-24 container mx-auto px-6 relative z-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24 items-center">
+            <div className="bg-white/95 p-12 shadow-2xl border-l-8 border-army-olive backdrop-blur-sm">
+              <p className="text-gray-800 text-xl leading-relaxed mb-10 font-bold">
+                QRSI consulting provide expert guidance to governments, defense organizations, and private contractors on national security strategy, technology integration, and operational efficiency. By combining strategic insight with technical expertise, weto help modernize defense capabilities, enhance cybersecurity, and ensure readiness across military and aerospace sectors.
+              </p>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                As Defense consulting, we play a critical role in bridging the gap between government defense priorities and private-sector innovation. we operate at the intersection of technology, strategy, and operations, supporting clients in areas such as cybersecurity, logistics, and defense modernization.
+              </p>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed mb-10 uppercase tracking-widest">
-              NEXT GEN PRIVATE MILITARY EXCELLENCE. QUANTUM INTELLIGENCE. INDUSTRIAL MIGHT.
-            </p>
-            <div className="flex gap-4">
-              <button className="p-3 bg-white/5 hover:bg-army-olive rounded-full transition-colors text-white/40 hover:text-white"><Twitter size={18} /></button>
-              <button className="p-3 bg-white/5 hover:bg-army-olive rounded-full transition-colors text-white/40 hover:text-white"><Instagram size={18} /></button>
-              <button className="p-3 bg-white/5 hover:bg-army-olive rounded-full transition-colors text-white/40 hover:text-white"><Linkedin size={18} /></button>
-              <button className="p-3 bg-white/5 hover:bg-army-olive rounded-full transition-colors text-white/40 hover:text-white"><Facebook size={18} /></button>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-12 md:gap-24">
-            <div className="space-y-4">
-              <h5 className="font-bold text-xs tracking-[0.4em] uppercase text-army-olive border-l-4 border-army-olive pl-4 mb-8">COMMAND</h5>
-              {links.slice(0, 4).map(link => (
-                <button key={link.id} onClick={() => { setView(link.id as ViewType); window.scrollTo(0, 0); }} className="block text-gray-500 hover:text-white uppercase text-[10px] tracking-widest font-bold text-left transition-colors">{link.name}</button>
-              ))}
-            </div>
-            <div className="space-y-4">
-              <h5 className="font-bold text-xs tracking-[0.4em] uppercase text-army-olive border-l-4 border-army-olive pl-4 mb-8">OPERATIONS</h5>
-              {links.slice(4).map(link => (
-                <button key={link.id} onClick={() => { setView(link.id as ViewType); window.scrollTo(0, 0); }} className="block text-gray-500 hover:text-white uppercase text-[10px] tracking-widest font-bold text-left transition-colors">{link.name}</button>
-              ))}
-            </div>
-            <div className="space-y-4">
-              <h5 className="font-bold text-xs tracking-[0.4em] uppercase text-army-olive border-l-4 border-army-olive pl-4 mb-8">RESOURCES</h5>
-              <button onClick={() => { setView('admin'); window.scrollTo(0, 0); }} className="block text-gray-700 hover:text-army-olive uppercase text-[9px] tracking-widest font-bold text-left transition-colors">SECURE UPLINK ADMIN</button>
-              <p className="text-gray-500 text-[9px] tracking-[0.2em] font-mono leading-relaxed uppercase">STATUS: 200 OK<br/>ENCRYPTION: AES-256<br/>ZONE: GLOBAL</p>
+            <div className="relative h-[500px] overflow-hidden clip-tactical shadow-2xl">
+              <img src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_a3dt3ga3dt3ga3dt.png?raw=true" className="w-full h-full object-cover grayscale brightness-75 contrast-125" alt="Defense Strategy" />
+              <div className="absolute inset-0 footage-overlay opacity-20"></div>
             </div>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-32">
+            {[
+              { id: "01", label: "Strategy Design", desc: "Design long-term defense strategies aligned with national goals" },
+              { id: "02", label: "Digital AI Integration", desc: "Integrate digital transformation and AI-driven solutions into defense operations" },
+              { id: "03", label: "Capability Enhancement", desc: "Enhance mission-critical capabilities through training and operational support" },
+              { id: "04", label: "Supply Chain Resilience", desc: "Improve cost control, procurement efficiency, and supply chain resilience" }
+            ].map((point) => (
+              <div key={point.id} className="bg-army-dark p-8 shadow-xl text-white border-t-4 border-army-olive hover:bg-army-olive/20 transition-all group">
+                <span className="text-army-olive font-stencil text-3xl block mb-4 group-hover:scale-110 transition-transform">{point.id}</span>
+                <h4 className="font-bold uppercase tracking-widest text-lg mb-4">{point.label}</h4>
+                <p className="text-white/60 text-sm leading-relaxed">{point.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-gray-50 p-16 border-y-8 border-army-olive mb-32 relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-8 opacity-5 rotate-12"><Building2 size={200} /></div>
+             <div className="max-w-4xl mx-auto">
+               <h3 className="text-3xl font-bold text-gray-900 uppercase font-stencil tracking-tighter mb-8">SOVEREIGN TRUST</h3>
+               <p className="text-xl text-gray-600 leading-relaxed italic">
+                 "Governments turn to us for specialized insights into emerging technologies and risk management. As security challenges evolve, we assist in creating agile, data-informed responses to threats ranging from cyberattacks to supply chain vulnerabilities."
+               </p>
+             </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {[
+              { title: "Strategic Planning", icon: <Layers />, desc: "Aligning national security goals with practical defense policies and procurement programs." },
+              { title: "Technology and Cybersecurity", icon: <BrainCircuit />, desc: "Implementing AI, cloud computing, and digital defense tools to protect sensitive systems." },
+              { title: "Operations and Logistics", icon: <Settings />, desc: "Streamlining supply chains, maintenance, and readiness programs across land, air, and naval forces." },
+              { title: "Training and Workforce Development", icon: <UserPlus />, desc: "Designing simulation and leadership programs to enhance decision-making and coordination." }
+            ].map((area, i) => (
+              <div key={i} className="flex gap-8 p-10 bg-white shadow-xl border border-gray-100 hover:border-army-olive transition-all group">
+                <div className="p-4 bg-army-olive/10 text-army-olive rounded-xl h-fit group-hover:bg-army-olive group-hover:text-white transition-all">
+                  {area.icon}
+                </div>
+                <div>
+                  <h4 className="text-2xl font-bold uppercase tracking-tighter mb-4 text-gray-900">{area.title}</h4>
+                  <p className="text-gray-500 leading-relaxed">{area.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="pt-16 border-t border-white/5 text-center">
-            <p className="text-gray-600 text-[10px] tracking-[0.4em] uppercase font-bold leading-relaxed">© 2026 QUANTUM REAPER STEEL INTERNATIONAL. ALL CHANNELS MONITORED.</p>
-        </div>
-      </div>
-    </footer>
+      </section>
+    </div>
   );
 };
 
 const ServiceModal = ({ service, onClose, lang }: { service: ServiceItem, onClose: () => void, lang: Language }) => {
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <MDiv 
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto relative shadow-2xl border-t-8 border-army-olive"
+    <MDiv
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/90 backdrop-blur-xl"
+    >
+      <MDiv
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto relative border-t-8 border-army-olive shadow-[0_0_100px_rgba(75,83,32,0.5)]"
       >
-        <button onClick={onClose} className="absolute top-6 right-6 text-gray-400 hover:text-army-olive transition-colors z-10">
+        <button onClick={onClose} className="absolute top-6 right-6 text-gray-400 hover:text-army-olive transition-colors z-10 bg-white/80 p-2 rounded-full shadow-lg">
           <X size={32} />
         </button>
-        
         <div className="flex flex-col lg:flex-row">
-          <div className="lg:w-1/2 h-[300px] lg:h-auto overflow-hidden bg-gray-100">
-            {service.img && (
-              <img src={service.img} className="w-full h-full object-cover grayscale" alt={service.title} />
-            )}
-            <div className="absolute inset-0 footage-overlay opacity-20 pointer-events-none"></div>
+          <div className="lg:w-1/2 bg-gray-100 min-h-[300px]">
+            <img src={service.img || "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1000"} className="w-full h-full object-cover grayscale brightness-75" alt={service.title} />
           </div>
           <div className="lg:w-1/2 p-12">
-            <div className="mb-6 text-army-olive">{service.icon}</div>
-            <h2 className="text-4xl font-bold uppercase mb-6 tracking-tighter font-stencil text-gray-900">{service.title}</h2>
-            <p className="text-gray-500 text-lg leading-relaxed mb-8">{service.longDesc}</p>
-            
+            <span className="text-army-olive font-black tracking-widest text-xs uppercase mb-4 block">Deployment Specs</span>
+            <h2 className="text-4xl font-bold uppercase tracking-tighter mb-8 font-stencil text-gray-900 leading-tight">{service.title}</h2>
+            <p className="text-gray-600 text-lg leading-relaxed mb-8 border-l-4 border-army-olive pl-6 italic">{service.desc}</p>
+            <div className="bg-gray-50 p-6 mb-8">
+              <h4 className="font-bold uppercase tracking-widest text-sm mb-4 text-gray-400 flex items-center gap-2"><Target size={16} /> Mission Parameters</h4>
+              <p className="text-gray-500 text-sm leading-relaxed">{service.longDesc}</p>
+            </div>
             <div className="space-y-4">
-              <h4 className="text-[10px] font-black tracking-[0.4em] uppercase text-army-olive mb-4">{translations[lang].common.missionReq}</h4>
+              <h4 className="font-bold uppercase tracking-widest text-sm text-gray-400">Tactical Requirements</h4>
               {service.requirements.map((req, i) => (
-                <div key={i} className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-gray-800 border-l-2 border-army-olive pl-4">
-                  {req}
+                <div key={i} className="flex items-center gap-3 text-army-olive font-bold text-xs uppercase tracking-widest bg-army-olive/5 p-3">
+                  <ChevronRight size={14} /> {req}
                 </div>
               ))}
             </div>
-            
-            <button 
-              onClick={onClose}
-              className="mt-12 w-full py-4 bg-army-olive text-white font-black uppercase tracking-[0.3em] text-xs hover:bg-army-dark transition-colors"
-            >
-              ACKNOWLEDGED // CLOSE BRIEFING
-            </button>
+            <button onClick={onClose} className="w-full mt-10 btn-tactical bg-army-olive text-white shadow-xl">ACKNOWLEDGE & CLOSE</button>
           </div>
         </div>
       </MDiv>
-    </div>
+    </MDiv>
   );
 };
 
 const BlogView = ({ lang, blogs }: { lang: Language, blogs: BlogEntry[] }) => {
   const t = translations[lang].blog;
   return (
-    <div className="pt-24 min-h-screen relative">
+    <div className="pt-24 min-h-screen">
       <PageBackground />
-      <section className="bg-gray-900 py-40 relative overflow-hidden text-center text-white">
-        <div className="absolute inset-0 footage-overlay opacity-20"></div>
-        <MDiv initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 px-6">
-          <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">Communication Hub</span>
-          <h1 className="text-7xl font-bold uppercase tracking-tighter mb-8 font-stencil">{t.title}</h1>
-          <p className="text-white/60 text-xl max-w-2xl mx-auto uppercase tracking-widest">{t.subtitle}</p>
+      <section className="bg-gray-900 py-40 text-center text-white relative overflow-hidden">
+        <div className="absolute inset-0 footage-overlay opacity-30"></div>
+        <MDiv initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
+          <span className="font-stencil text-army-olive text-sm tracking-[0.5em] uppercase mb-6 block">{t.subtitle}</span>
+          <h1 className="text-7xl md:text-9xl font-bold uppercase tracking-tighter mb-8 font-stencil">{t.title}</h1>
         </MDiv>
       </section>
 
-      <section className="py-24 container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 gap-16 max-w-5xl mx-auto">
-          {blogs.length === 0 ? (
-            <div className="text-center py-20 bg-white/50 backdrop-blur-sm border border-dashed border-gray-200">
-               <p className="font-bold text-gray-400 tracking-widest uppercase">{t.noPosts}</p>
-            </div>
-          ) : (
-            blogs.map((blog) => (
-              <MDiv 
-                key={blog.id} 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="bg-white shadow-2xl border border-gray-100 overflow-hidden flex flex-col md:flex-row group"
-              >
-                <div className="md:w-2/5 relative h-[300px] md:h-auto overflow-hidden">
-                  <img src={blog.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" alt={blog.title} />
-                  <div className="absolute inset-0 footage-overlay opacity-10 pointer-events-none"></div>
-                </div>
-                <div className="md:w-3/5 p-12 flex flex-col justify-center">
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="text-army-olive font-black text-[10px] tracking-[0.4em] uppercase bg-army-olive/10 px-3 py-1">{blog.category}</span>
-                    <span className="text-gray-400 text-[10px] font-bold tracking-widest">{blog.date}</span>
+      <section className="py-24 container mx-auto px-6">
+        {blogs.length === 0 ? (
+          <div className="text-center py-40">
+            <AlertTriangle size={100} className="mx-auto text-army-olive mb-8 opacity-20" />
+            <p className="text-2xl font-bold uppercase tracking-widest text-gray-300">{t.noPosts}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-24 max-w-6xl mx-auto">
+            {blogs.map((blog) => (
+              <MDiv key={blog.id} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="group">
+                <div className="flex flex-col lg:flex-row gap-12 items-stretch">
+                  <div className="lg:w-1/2 aspect-video overflow-hidden clip-tactical shadow-2xl relative">
+                    <img src={blog.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" alt={blog.title} />
+                    <div className="absolute top-0 left-0 bg-army-olive text-white px-6 py-2 font-black text-[10px] tracking-widest uppercase">{blog.category}</div>
                   </div>
-                  <h2 className="text-3xl font-bold uppercase mb-6 tracking-tighter group-hover:text-army-olive transition-colors">{blog.title}</h2>
-                  <p className="text-gray-500 leading-relaxed mb-8">{blog.content}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">BY: {blog.author}</span>
-                    <button className="flex items-center gap-2 text-army-olive font-black text-[10px] tracking-[0.4em] uppercase group-hover:translate-x-2 transition-transform">
-                      {t.readMore} <ChevronRight size={14} />
+                  <div className="lg:w-1/2 flex flex-col justify-center">
+                    <div className="flex items-center gap-4 mb-6">
+                       <span className="text-army-olive font-black tracking-widest text-[10px] uppercase">{blog.date}</span>
+                       <span className="w-8 h-[2px] bg-gray-200"></span>
+                       <span className="text-gray-400 font-bold tracking-widest text-[10px] uppercase">BY: {blog.author}</span>
+                    </div>
+                    <h2 className="text-4xl font-bold uppercase tracking-tight mb-8 group-hover:text-army-olive transition-colors">{blog.title}</h2>
+                    <p className="text-gray-500 text-lg leading-relaxed mb-10 line-clamp-4">{blog.content}</p>
+                    <button className="flex items-center gap-3 text-army-olive font-black tracking-[0.3em] text-xs uppercase border-b-2 border-army-olive pb-2 w-fit hover:gap-6 transition-all">
+                       {t.readMore} <ArrowRight size={16} />
                     </button>
                   </div>
                 </div>
               </MDiv>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
 };
 
 const AdminView = ({ lang, onAddBlog, blogs, onDeleteBlog }: { lang: Language, onAddBlog: (b: BlogEntry) => void, blogs: BlogEntry[], onDeleteBlog: (id: string) => void }) => {
+  const [form, setForm] = useState({ title: '', category: 'QUANTUM INTEL', content: '', img: '', author: 'COMMANDER_X' });
   const t = translations[lang].blog;
-  const [formData, setFormData] = useState({
-    title: '',
-    category: '',
-    content: '',
-    img: '',
-    author: 'COMMANDER_X'
-  });
-  const [success, setSuccess] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newBlog: BlogEntry = {
-      ...formData,
-      id: Date.now().toString(),
-      date: new Date().toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }).toUpperCase()
-    };
-    onAddBlog(newBlog);
-    setFormData({ title: '', category: '', content: '', img: '', author: 'COMMANDER_X' });
-    setSuccess(true);
-    setTimeout(() => setSuccess(false), 5000);
+    onAddBlog({ 
+      ...form, 
+      id: Date.now().toString(), 
+      date: new Date().toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' }).toUpperCase() 
+    });
+    setForm({ title: '', category: 'QUANTUM INTEL', content: '', img: '', author: 'COMMANDER_X' });
   };
 
   return (
-    <div className="pt-24 min-h-screen relative bg-gray-50">
-      <div className="container mx-auto px-6 py-24 max-w-4xl">
-        <div className="bg-white p-12 shadow-2xl border-t-8 border-red-600 mb-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-5"><ShieldAlert size={120} /></div>
-          <h1 className="text-4xl font-bold uppercase mb-4 tracking-tighter font-stencil text-gray-900">{t.adminTitle}</h1>
-          <p className="text-gray-500 font-bold uppercase tracking-widest text-xs mb-10">{t.adminSubtitle}</p>
-          
-          <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">{t.formTitle}</label>
-                <input required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} type="text" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">{t.formCategory}</label>
-                <input required value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} type="text" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">{t.formImg}</label>
-              <input required value={formData.img} onChange={e => setFormData({...formData, img: e.target.value})} type="url" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">{t.formContent}</label>
-              <textarea required value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} rows={6} className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold" />
-            </div>
-            
-            <button type="submit" className="w-full py-6 bg-red-600 text-white font-black uppercase tracking-[0.5em] text-xs hover:bg-red-700 transition-all transform hover:scale-[1.02] shadow-xl">
-              {t.formSubmit}
-            </button>
-          </form>
+    <div className="pt-24 min-h-screen bg-gray-100">
+      <section className="bg-army-dark py-24 text-center text-white">
+        <h1 className="text-5xl font-bold uppercase tracking-tight font-stencil">{t.adminTitle}</h1>
+        <p className="text-army-olive font-bold tracking-widest uppercase mt-4">{t.adminSubtitle}</p>
+      </section>
 
-          {success && (
-            <MDiv initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-6 bg-green-50 border-l-4 border-green-500 text-green-700 font-bold uppercase text-xs tracking-widest">
-              {t.formSuccess}
-            </MDiv>
-          )}
-        </div>
+      <div className="container mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <div className="bg-white p-12 shadow-2xl border-t-8 border-army-olive">
+            <h2 className="text-2xl font-bold uppercase mb-8 border-b pb-4">New Operational Log</h2>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder={t.formTitle} className="w-full p-4 bg-gray-50 border outline-none focus:border-army-olive" required />
+              <input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder={t.formCategory} className="w-full p-4 bg-gray-50 border outline-none focus:border-army-olive" required />
+              <input value={form.img} onChange={e => setForm({ ...form, img: e.target.value })} placeholder={t.formImg} className="w-full p-4 bg-gray-50 border outline-none focus:border-army-olive" required />
+              <textarea value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} rows={6} placeholder={t.formContent} className="w-full p-4 bg-gray-50 border outline-none focus:border-army-olive" required></textarea>
+              <button type="submit" className="w-full btn-tactical bg-army-olive text-white">{t.formSubmit}</button>
+            </form>
+          </div>
 
-        <div className="space-y-4">
-          <h3 className="font-stencil text-xl uppercase tracking-widest text-gray-400 mb-6 px-4">Active Intel Logs</h3>
-          {blogs.map(blog => (
-            <div key={blog.id} className="bg-white p-6 shadow-lg border border-gray-100 flex justify-between items-center group hover:border-army-olive transition-colors">
-              <div className="flex items-center gap-6">
-                 <div className="w-16 h-16 bg-gray-100 overflow-hidden clip-tactical shrink-0">
-                    <img src={blog.img} className="w-full h-full object-cover grayscale" alt="" />
+          <div className="space-y-4">
+             <h2 className="text-2xl font-bold uppercase mb-8">Existing Logs</h2>
+             {blogs.map(blog => (
+               <div key={blog.id} className="bg-white p-6 shadow flex justify-between items-center group">
+                 <div className="flex items-center gap-4">
+                    <img src={blog.img} className="w-16 h-16 object-cover grayscale" alt="" />
+                    <div>
+                      <h4 className="font-bold uppercase text-sm">{blog.title}</h4>
+                      <p className="text-[10px] text-gray-400 font-bold tracking-widest">{blog.date}</p>
+                    </div>
                  </div>
-                 <div>
-                    <h4 className="font-bold uppercase tracking-tight text-gray-900 group-hover:text-army-olive transition-colors">{blog.title}</h4>
-                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{blog.date} // {blog.category}</span>
-                 </div>
-              </div>
-              <button onClick={() => onDeleteBlog(blog.id)} className="p-3 text-gray-300 hover:text-red-600 hover:bg-red-50 transition-all rounded-full">
-                <Trash2 size={20} />
-              </button>
-            </div>
-          ))}
+                 <button onClick={() => onDeleteBlog(blog.id)} className="text-red-500 hover:bg-red-50 p-3 rounded transition-colors"><Trash2 size={20} /></button>
+               </div>
+             ))}
+          </div>
         </div>
       </div>
     </div>
+  );
+};
+
+const Footer = ({ setView, lang }: { setView: (v: ViewType) => void, lang: Language }) => {
+  return (
+    <footer className="bg-army-dark pt-24 pb-12 border-t border-white/5 text-white">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+          <div className="space-y-8">
+            <div className="flex items-center gap-2">
+              <Shell className="text-army-olive w-8 h-8 rotate-45" />
+              <span className="text-3xl font-bold tracking-tighter text-white font-stencil uppercase">QRSI<span className="text-army-olive">.WAR</span></span>
+            </div>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Global leaders in quantum-fusion tactical intelligence and industrial-grade kinetic defense. Forged in conflict, deployed for absolute asset dominance.
+            </p>
+            <div className="flex gap-4">
+              <MA href="#" whileHover={{ y: -5 }} className="w-10 h-10 bg-white/5 text-white rounded-full flex items-center justify-center hover:bg-army-olive transition-colors"><Twitter size={18} /></MA>
+              <MA href="#" whileHover={{ y: -5 }} className="w-10 h-10 bg-white/5 text-white rounded-full flex items-center justify-center hover:bg-army-olive transition-colors"><Instagram size={18} /></MA>
+              <MA href="#" whileHover={{ y: -5 }} className="w-10 h-10 bg-white/5 text-white rounded-full flex items-center justify-center hover:bg-army-olive transition-colors"><Linkedin size={18} /></MA>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-stencil text-white text-lg mb-8 uppercase tracking-widest">Navigation</h4>
+            <ul className="space-y-4 text-sm font-bold uppercase tracking-widest text-gray-500">
+              <li><button onClick={() => setView('about')} className="hover:text-army-olive transition-colors">Who We Are</button></li>
+              <li><button onClick={() => setView('capabilities')} className="hover:text-army-olive transition-colors">Core Capabilities</button></li>
+              <li><button onClick={() => setView('bodyguard')} className="hover:text-army-olive transition-colors">Protection Details</button></li>
+              <li><button onClick={() => setView('consultancy')} className="hover:text-army-olive transition-colors">Consultancy</button></li>
+            </ul>
+          </div>
+
+          <div>
+             <h4 className="font-stencil text-white text-lg mb-8 uppercase tracking-widest">Operational Hubs</h4>
+             <ul className="space-y-4 text-sm font-bold uppercase tracking-widest text-gray-500">
+              <li className="flex items-center gap-3"><MapPin size={16} className="text-army-olive" /> Africa Command Hub</li>
+              <li className="flex items-center gap-3"><MapPin size={16} className="text-army-olive" /> Global Response Center</li>
+              <li className="flex items-center gap-3"><MapPin size={16} className="text-army-olive" /> Tactical Training Facility</li>
+             </ul>
+          </div>
+
+          <div>
+            <h4 className="font-stencil text-white text-lg mb-8 uppercase tracking-widest">Transmission</h4>
+            <div className="flex bg-white/5 p-2 border border-white/10">
+              <input type="email" placeholder="ENCRYPTED EMAIL" className="bg-transparent outline-none flex-grow p-2 text-xs font-bold uppercase tracking-widest text-white" />
+              <button className="bg-army-olive text-white p-3"><ArrowRight size={16} /></button>
+            </div>
+            <p className="text-[10px] text-gray-500 mt-4 font-bold tracking-[0.2em] uppercase">Join the Intel Log notification list.</p>
+          </div>
+        </div>
+
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-gray-500 text-[10px] font-bold tracking-[0.3em] uppercase">
+            © 2026 QUANTUM REAPER STEEL INTERNATIONAL // ALL RIGHTS RESERVED
+          </p>
+          <div className="flex gap-8 text-[10px] font-bold tracking-[0.3em] uppercase text-gray-500">
+            <button className="hover:text-army-olive">TERMS OF ENGAGEMENT</button>
+            <button className="hover:text-army-olive">SECURE PROTOCOLS</button>
+            <button onClick={() => setView('admin')} className="text-army-olive opacity-20 hover:opacity-100 transition-opacity flex items-center gap-2"><Lock size={10} /> COMMAND LOGIN</button>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 };
 
@@ -1538,7 +1640,6 @@ export default function App() {
             <ReaperDoctrine lang={lang} />
             <MilitaryShopTeaser onArmoryClick={() => { setView('armory'); window.scrollTo(0, 0); }} lang={lang} />
             
-            {/* Intel Log Teaser on Home */}
             <section className="py-24 bg-gray-50 border-y border-gray-100">
                <div className="container mx-auto px-6">
                   <div className="flex justify-between items-end mb-12">
@@ -1549,7 +1650,7 @@ export default function App() {
                      {blogs.slice(0, 2).map(blog => (
                        <div key={blog.id} className="bg-white p-8 border border-gray-100 flex flex-col md:flex-row gap-8 items-center group cursor-pointer" onClick={() => { setView('blog'); window.scrollTo(0, 0); }}>
                           <div className="md:w-1/3 aspect-square overflow-hidden bg-gray-100">
-                            <img src={blog.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
+                            <img src={blog.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt={blog.title} />
                           </div>
                           <div className="md:w-2/3">
                             <span className="text-[10px] text-army-olive font-black tracking-widest block mb-2">{blog.category}</span>
@@ -1561,12 +1662,6 @@ export default function App() {
                   </div>
                </div>
             </section>
-
-            <AnimatePresence>
-              {selectedHomeService && (
-                <ServiceModal service={selectedHomeService} onClose={() => setSelectedHomeService(null)} lang={lang} />
-              )}
-            </AnimatePresence>
           </>
         )}
         
@@ -1675,6 +1770,7 @@ export default function App() {
         )}
 
         {view === 'consultancy' && <ConsultancyView lang={lang} />}
+        {view === 'defense-advisory' && <DefenseAdvisoryView lang={lang} />}
 
         {view === 'bodyguard' && (
           <div className="pt-24 min-h-screen relative">
@@ -1715,7 +1811,6 @@ export default function App() {
         {view === 'contact' && (
           <div className="pt-24 min-h-screen relative">
             <PageBackground />
-            {/* Contact Hero */}
             <section className="bg-gray-900 py-40 relative overflow-hidden text-center text-white">
               <div className="absolute inset-0 footage-overlay opacity-30"></div>
               <div className="absolute inset-0 camo-pattern opacity-10"></div>
@@ -1728,13 +1823,11 @@ export default function App() {
 
             <div className="relative z-10 py-24">
               <section className="container mx-auto px-6">
-                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
-                   {/* Contact Form */}
+                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch mb-24">
                    <div className="bg-white p-12 shadow-2xl border-l-8 border-army-olive relative overflow-hidden">
                       <div className="absolute top-0 right-0 p-8 opacity-5"><Send size={100} /></div>
                       <h2 className="text-4xl font-bold uppercase mb-4 tracking-tighter font-stencil text-gray-900">TRANSMIT ORDERS</h2>
                       <p className="text-gray-500 font-bold uppercase text-xs tracking-widest mb-10 border-b border-gray-100 pb-4">READY TO DEPLOY REAPERS? SECURE YOUR EMPIRE.</p>
-                      
                       <form className="space-y-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                           <div className="space-y-2">
@@ -1759,42 +1852,28 @@ export default function App() {
                           <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">Encryption Message</label>
                           <textarea rows={5} placeholder="BRIEF MISSION PARAMETERS" className="w-full bg-gray-50 border-2 border-gray-100 p-4 focus:border-army-olive outline-none transition-colors font-bold uppercase tracking-widest text-sm resize-none"></textarea>
                         </div>
-                        <button type="submit" className="w-full btn-tactical bg-army-olive text-white shadow-xl">
-                          TRANSMIT REQUEST <ArrowRight className="ml-4" />
-                        </button>
+                        <button type="submit" className="w-full btn-tactical bg-army-olive text-white shadow-xl">TRANSMIT REQUEST <ArrowRight className="ml-4" /></button>
                       </form>
                    </div>
-
-                   {/* Location & Nodes */}
                    <div className="flex flex-col gap-8">
                       <div className="bg-gray-900 p-12 shadow-2xl text-white border-r-8 border-army-olive flex-grow relative overflow-hidden group">
                          <div className="absolute inset-0 camo-pattern opacity-10"></div>
                          <h2 className="text-4xl font-bold uppercase mb-10 tracking-tighter font-stencil text-army-olive">GLOBAL NODES</h2>
-                         
                          <div className="space-y-12">
                            <div className="flex gap-8 group/node">
                              <div className="p-4 bg-army-olive rounded-full h-fit group-hover/node:scale-125 transition-transform"><MapPin size={24} /></div>
                              <div>
                                <h3 className="font-stencil text-2xl text-white mb-2 uppercase tracking-widest">HQ AFRICA</h3>
-                               <p className="text-white/60 text-lg leading-relaxed font-light">
-                                 Strategic Operations Center<br/>
-                                 Sector 7, Central Hub<br/>
-                                 Africa Deployment Zone
-                               </p>
+                               <p className="text-white/60 text-lg leading-relaxed font-light">Strategic Operations Center<br/>Sector 7, Central Hub<br/>Africa Deployment Zone</p>
                              </div>
                            </div>
-
                            <div className="flex gap-8 group/node">
                              <div className="p-4 bg-army-olive rounded-full h-fit group-hover/node:scale-125 transition-transform"><Radio size={24} /></div>
                              <div>
                                <h3 className="font-stencil text-2xl text-white mb-2 uppercase tracking-widest">SIGNAL COMMS</h3>
-                               <p className="text-white/60 text-lg font-mono">
-                                 SECURE_LINE: +1 800-REAPER-1<br/>
-                                 ENCRYPTED_MAIL: COMMAND@QRSI.WAR
-                               </p>
+                               <p className="text-white/60 text-lg font-mono">SECURE_LINE: +1 800-REAPER-1<br/>ENCRYPTED_MAIL: COMMAND@QRSI.WAR</p>
                              </div>
                            </div>
-
                            <div className="flex gap-8 group/node">
                              <div className="p-4 bg-army-olive rounded-full h-fit group-hover/node:scale-125 transition-transform"><Clock size={24} /></div>
                              <div>
@@ -1803,56 +1882,70 @@ export default function App() {
                              </div>
                            </div>
                          </div>
-                         
-                         <div className="mt-12 p-8 border-2 border-dashed border-army-olive/30 bg-army-olive/5">
-                            <h4 className="font-black text-army-olive text-[10px] tracking-[0.5em] uppercase mb-4">TACTICAL STATUS</h4>
-                            <div className="flex items-center gap-4">
-                               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                               <span className="text-xs font-bold tracking-widest text-green-500">OPERATORS READY FOR DEPLOYMENT</span>
-                            </div>
-                         </div>
-                      </div>
-
-                      <div className="h-64 relative overflow-hidden clip-tactical shadow-2xl">
-                         <img src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/Gemini_Generated_Image_udk2h4udk2h4udk2.png?raw=true" className="w-full h-full object-cover grayscale brightness-50" alt="Tactical Response" />
-                         <div className="absolute inset-0 flex items-center justify-center">
-                            <h3 className="text-white text-4xl font-stencil uppercase tracking-[0.3em] drop-shadow-2xl">OVERWATCH</h3>
-                         </div>
-                         <div className="absolute inset-0 footage-overlay opacity-20"></div>
                       </div>
                    </div>
+                 </div>
+
+                 {/* Recruitment Section */}
+                 <div className="bg-army-dark p-12 shadow-2xl text-white border-b-8 border-army-accent relative overflow-hidden group">
+                    <div className="absolute inset-0 camo-pattern opacity-10"></div>
+                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                       <div>
+                          <span className="font-stencil text-army-accent text-sm tracking-[0.5em] uppercase mb-4 block">Deployment Opportunities</span>
+                          <h2 className="text-5xl font-bold uppercase mb-8 tracking-tighter font-stencil">RECRUITMENT PIPELINE</h2>
+                          <p className="text-white/70 text-xl leading-relaxed mb-10">
+                            QRSI is always hunting for the elite 1%. If you have a background in special operations, advanced signal intelligence, or quantum engineering, we want to hear from you.
+                          </p>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                             {[
+                               { label: "Tier-1 Operatives", icon: <UserCheck size={18} /> },
+                               { label: "Signal Analysts", icon: <Wifi size={18} /> },
+                               { label: "Quantum Engineers", icon: <Cpu size={18} /> },
+                               { label: "Logistics Experts", icon: <Box size={18} /> }
+                             ].map((role, i) => (
+                               <div key={i} className="flex items-center gap-3 bg-white/5 p-4 border border-white/10 hover:border-army-accent transition-colors group/role">
+                                  <div className="text-army-accent group-hover/role:scale-110 transition-transform">{role.icon}</div>
+                                  <span className="font-bold uppercase tracking-widest text-sm">{role.label}</span>
+                               </div>
+                             ))}
+                          </div>
+                       </div>
+                       <div className="space-y-8">
+                          <div className="bg-white/5 p-8 border-l-4 border-army-accent backdrop-blur-sm">
+                             <h4 className="font-bold text-army-accent uppercase tracking-widest mb-4">Vetting Level 5</h4>
+                             <p className="text-sm text-white/60 leading-relaxed uppercase tracking-wider">
+                               ALL RECRUITS MUST UNDERGO DEEP-SPECTRUM VETTING INCLUDING PSYCHOLOGICAL EVALUATION, COMBAT SIMULATION, AND FULL BACKGROUND NEUTRALIZATION.
+                             </p>
+                          </div>
+                          <button className="btn-tactical bg-army-accent text-white w-full">SUBMIT COMBAT DOSSIER <UserRoundSearch className="ml-4" /></button>
+                       </div>
+                    </div>
                  </div>
               </section>
             </div>
           </div>
         )}
 
-        {/* Pre-Footer Standing By Section */}
         <section className="bg-army-dark py-16 border-t-4 border-army-olive relative overflow-hidden">
           <div className="absolute inset-0 camo-pattern opacity-5"></div>
           <div className="container mx-auto px-6 text-center relative z-10">
-            <h2 className="text-white text-3xl md:text-5xl font-bold uppercase tracking-tighter font-stencil mb-4 drop-shadow-lg">
-              STANDING BY – TRANSMIT ORDERS
-            </h2>
-            <p className="text-army-olive text-xl font-bold uppercase tracking-[0.2em]">
-              Ready to deploy Reapers? Secure your empire
-            </p>
+            <h2 className="text-white text-3xl md:text-5xl font-bold uppercase tracking-tighter font-stencil mb-4 drop-shadow-lg">STANDING BY – TRANSMIT ORDERS</h2>
+            <p className="text-army-olive text-xl font-bold uppercase tracking-[0.2em]">Ready to deploy Reapers? Secure your empire</p>
           </div>
         </section>
       </main>
 
       <Footer setView={setView} lang={lang} />
       
-      {/* Floating Tactical Contact Hub */}
+      {/* Global Modal - Moved here to ensure it triggers correctly on any page */}
+      <AnimatePresence>
+        {selectedHomeService && (
+          <ServiceModal service={selectedHomeService} onClose={() => setSelectedHomeService(null)} lang={lang} />
+        )}
+      </AnimatePresence>
+
       <div className="fixed bottom-6 right-6 z-[150] flex flex-col items-end gap-4">
-        {/* Telegram restoration */}
-        <MA 
-          href="https://t.me/qrsi_command" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          whileHover={{ x: -10 }} 
-          className="group flex items-center gap-4 cursor-pointer"
-        >
+        <MA href="https://t.me/qrsi_command" target="_blank" rel="noopener noreferrer" whileHover={{ x: -10 }} className="group flex items-center gap-4 cursor-pointer">
           <div className="bg-white px-6 py-2 rounded-lg shadow-xl text-[10px] font-bold text-gray-800 border-l-4 border-[#0088cc] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">
             {lang === 'en' ? 'Command Link (Telegram)' : 'Lien Commandement'}
           </div>
@@ -1860,15 +1953,7 @@ export default function App() {
             <Send size={24} />
           </div>
         </MA>
-
-        {/* WhatsApp Uplink */}
-        <MA 
-          href="https://wa.me/18007774927" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          whileHover={{ x: -10 }} 
-          className="group flex items-center gap-4 cursor-pointer"
-        >
+        <MA href="https://wa.me/18007774927" target="_blank" rel="noopener noreferrer" whileHover={{ x: -10 }} className="group flex items-center gap-4 cursor-pointer">
           <div className="bg-white px-6 py-2 rounded-lg shadow-xl text-[10px] font-bold text-gray-800 border-l-4 border-[#25D366] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">
             {lang === 'en' ? 'Direct Uplink (WhatsApp)' : 'Liaison Directe'}
           </div>
@@ -1876,19 +1961,13 @@ export default function App() {
             <MessageCircle size={24} />
           </div>
         </MA>
-
-        {/* Tactical Avatar Badge */}
         <div className="group flex flex-col items-end cursor-pointer">
           <div className="bg-white px-8 py-4 rounded-xl shadow-2xl mb-4 text-xs font-bold text-gray-800 border-l-8 border-army-olive hidden group-hover:block transition-all uppercase tracking-widest animate-in slide-in-from-right-4">
             {lang === 'en' ? 'OPERATOR STANDING BY.' : 'OPÉRATEUR EN ATTENTE.'}
             <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-b border-r border-gray-100 rotate-45"></div>
           </div>
           <div className="w-20 h-20 bg-army-olive rounded-full overflow-hidden border-4 border-white shadow-2xl hover:scale-110 transition-all duration-300 ring-4 ring-army-olive/10 relative">
-            <img 
-              src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-25-meddy-2158672407-35534150.jpg?raw=true" 
-              alt="Support" 
-              className="w-full h-full object-cover grayscale sepia-[0.5] hue-rotate-[60deg]" 
-            />
+            <img src="https://github.com/expertredactionjeandumont-lang/picture/blob/main/pexels-25-meddy-2158672407-35534150.jpg?raw=true" alt="Support" className="w-full h-full object-cover grayscale sepia-[0.5] hue-rotate-[60deg]" />
             <div className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
           </div>
         </div>
